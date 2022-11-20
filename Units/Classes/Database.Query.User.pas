@@ -42,6 +42,8 @@ type
     function GetUtente(Username: String): Integer;
     function UtentiPresenti: Integer;
     function UtenteUltimoEvento: Integer;
+    function ImpostaUtenteCorrente(UserID: Integer): Boolean;
+    function EliminaUtenteCorrente: Boolean;
   end;
 
 function GetIQueryUser: IQueryUser;
@@ -65,6 +67,8 @@ type
     function GetUtente(Username: String): Integer;
     function UtentiPresenti: Integer;
     function UtenteUltimoEvento: Integer;
+    function ImpostaUtenteCorrente(UserID: Integer): Boolean;
+    function EliminaUtenteCorrente: Boolean;
   end;
 
 function GetIQueryUser: IQueryUser;
@@ -85,6 +89,15 @@ destructor TQueryUser.Destroy;
 begin
   FQuery.Free;
   inherited;
+end;
+
+function TQueryUser.EliminaUtenteCorrente: Boolean;
+begin
+  try
+    Result := Query.ExecSQL('DELETE FROM CURRENT_USER', []) > 0;
+  except
+    Result := False;
+  end;
 end;
 
 procedure TQueryUser.CreaLogInEvent(UserID: Integer; RememberMe: Boolean);
@@ -148,6 +161,15 @@ begin
       Result := Query.FieldByName('ID').AsInteger;
   except
     Result := -1;
+  end;
+end;
+
+function TQueryUser.ImpostaUtenteCorrente(UserID: Integer): Boolean;
+begin
+  try
+    Result := Query.ExecSQL('INSERT INTO CURRENT_USER (ID) VALUES (:ID)', [UserID]) > 0;
+  except
+    Result := False;
   end;
 end;
 

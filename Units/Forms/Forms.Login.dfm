@@ -248,7 +248,7 @@ object LogInForm: TLogInForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 32
+            Width = 289
             Height = 19
             Align = alTop
             Alignment = taCenter
@@ -259,6 +259,7 @@ object LogInForm: TLogInForm
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
+            ExplicitWidth = 32
           end
           object PCentralCrea: TPanel
             AlignWithMargins = True
@@ -282,28 +283,31 @@ object LogInForm: TLogInForm
                 AlignWithMargins = True
                 Left = 3
                 Top = 49
-                Width = 50
+                Width = 277
                 Height = 13
                 Align = alTop
                 Caption = 'Password:'
+                ExplicitWidth = 50
               end
               object LUsernameCrea: TLabel
                 AlignWithMargins = True
                 Left = 3
                 Top = 3
-                Width = 52
+                Width = 277
                 Height = 13
                 Align = alTop
                 Caption = 'Username:'
+                ExplicitWidth = 52
               end
               object LPasswordCrea2: TLabel
                 AlignWithMargins = True
                 Left = 3
                 Top = 95
-                Width = 80
+                Width = 277
                 Height = 13
                 Align = alTop
                 Caption = 'Ripeti Password:'
+                ExplicitWidth = 80
               end
               object EUsernameCrea: TEdit
                 AlignWithMargins = True

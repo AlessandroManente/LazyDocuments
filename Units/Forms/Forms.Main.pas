@@ -4,6 +4,7 @@ interface
 
 uses
   Database.Manager,
+  Database.Query.User,
   Forms.Login,
 
   Winapi.Windows,
@@ -69,19 +70,21 @@ type
     PCercaBase: TPanel;
     PAggiungiBase: TPanel;
     PImpostazioniBase: TPanel;
+    procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionPCAggiungiExecute(Sender: TObject);
     procedure ActionPCCercaExecute(Sender: TObject);
     procedure ActionPCImpostazioniExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
-    procedure SetupDaUtente(Utente: Integer);
+    FIUser: IQueryUser;
     procedure SetTSCerca;
     procedure SetTSAggiungi;
     procedure SetTSImpostazioni;
+    procedure SetIUser(const Value: IQueryUser);
   protected
-    procedure ExecQueryCerca(SQL: String);
+    property IUser: IQueryUser read FIUser write SetIUser;
   public
+    procedure SetupDaUtente(Utente: Integer);
   end;
 
 var
@@ -91,10 +94,22 @@ implementation
 
 {$R *.dfm}
 
+procedure TLazyDocumentsForm.FormDestroy(Sender: TObject);
+begin
+  //
+  inherited;
+end;
+
 procedure TLazyDocumentsForm.FormCreate(Sender: TObject);
 begin
   inherited;
+  FIUser := GetIQueryUser;
   SetTSCerca;
+end;
+
+procedure TLazyDocumentsForm.SetIUser(const Value: IQueryUser);
+begin
+  FIUser := Value;
 end;
 
 procedure TLazyDocumentsForm.SetTSAggiungi;
@@ -130,24 +145,6 @@ end;
 procedure TLazyDocumentsForm.ActionPCImpostazioniExecute(Sender: TObject);
 begin
   SetTSImpostazioni;
-end;
-
-procedure TLazyDocumentsForm.ExecQueryCerca(SQL: String);
-begin
-  //
-end;
-
-procedure TLazyDocumentsForm.FormShow(Sender: TObject);
-var
-  Utente: Integer;
-begin
-  inherited;
-  Application.ProcessMessages;
-  Utente := EffettuaLogin;
-  if Utente > 0 then
-    SetupDaUtente(Utente)
-  else
-    Close;
 end;
 
 end.

@@ -91,6 +91,7 @@ type
     procedure SetIUser(const Value: IQueryUser);
   protected
     property IUser: IQueryUser read FIUser write SetIUser;
+    procedure CreateParams(var Params: TCreateParams); override;
   public
     procedure ImpostaLogin;
   end;
@@ -101,18 +102,18 @@ const
 var
   LogInForm: TLogInForm;
 
-function EffettuaLogin: Integer;
+function EffettuaLogin: Boolean;
 
 implementation
 
-function EffettuaLogin: Integer;
+function EffettuaLogin: Boolean;
 var
   LI: TLogInForm;
 begin
   LI := TLogInForm.Create(nil);
   try
     LI.ImpostaLogin;
-    Result := LI.ShowModal;
+    Result := LI.ShowModal > 0;
   finally
     LI.Free;
   end;
@@ -126,6 +127,7 @@ procedure TLogInForm.FormCreate(Sender: TObject);
 begin
   inherited;
   FIUser := GetIQueryUser;
+  IUser.EliminaUtenteCorrente;
 end;
 
 procedure TLogInForm.ActionAccediExecute(Sender: TObject);
@@ -143,6 +145,7 @@ begin
         begin
           IUser.CreaLogInEvent(UserID, CBRicordami.Checked);
           ModalResult := UserID;
+          IUser.ImpostaUtenteCorrente(UserID);
         end
     end;
 end;
@@ -166,6 +169,7 @@ begin
         begin
           IUser.CreaLogInEvent(UserID, CBRicordamiCrea.Checked);
           ModalResult := UserID;
+          IUser.ImpostaUtenteCorrente(UserID);
         end;
     end
 end;
@@ -187,6 +191,12 @@ begin
       EPassword.Text := Password;
       CBRicordami.Checked := True;
     end;
+end;
+
+procedure TLogInForm.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TLogInForm.FormResize(Sender: TObject);

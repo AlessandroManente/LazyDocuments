@@ -12,7 +12,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
-  OnShow = FormShow
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object SplitView: TSplitView

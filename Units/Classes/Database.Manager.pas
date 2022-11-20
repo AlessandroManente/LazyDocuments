@@ -106,8 +106,7 @@ end;
 
 procedure TDatabaseManager.SetupConnection;
 begin
-  Connection.Params.Values['Database'] := ExtractFilePath(ParamStr(0)) +
-    'LazyDocuments.db';
+  Connection.Params.Values['Database'] := ExtractFilePath(ParamStr(0)) + 'LazyDocuments.db';
   Connection.DriverName := 'SQLite';
   Connection.Connected := True;
 end;
