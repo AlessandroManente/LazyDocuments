@@ -48,3 +48,9 @@ modules/
 
 CompiledFiles
 Database
+/Units/Frames
+/Units/Forms/__history
+/Units/Forms/__recovery
+/Units/Classes/__history
+/Units/Classes/__recovery
+/Units/Interfaces
