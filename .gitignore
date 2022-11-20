@@ -32,6 +32,12 @@
 # Delphi history and backups
 __history/
 __recovery/
+Units/Classes/__history/
+Units/Classes/__recovery/
+Units/Forms/__history/
+Units/Forms/__recovery/
+Units/Frames/
+
 *.~*
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
