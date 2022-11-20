@@ -130,16 +130,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\Units\Forms\Main.pas">
+        <DCCReference Include="..\Units\Forms\Forms.Main.pas">
             <Form>LazyDocumentsForm</Form>
         </DCCReference>
         <DCCReference Include="..\Units\Classes\Database.Manager.pas"/>
-        <DCCReference Include="..\Units\Forms\LogIn.pas">
+        <DCCReference Include="..\Units\Forms\Forms.Login.pas">
             <Form>LogInForm</Form>
         </DCCReference>
         <DCCReference Include="..\Units\Classes\Utils.Format.pas"/>
         <DCCReference Include="..\Units\Classes\Database.Query.pas"/>
-        <DCCReference Include="..\Units\Classes\Database.Query.LogIn.pas"/>
+        <DCCReference Include="..\Units\Classes\Database.Query.User.pas"/>
         <DCCReference Include="..\Units\Classes\Utils.Log.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

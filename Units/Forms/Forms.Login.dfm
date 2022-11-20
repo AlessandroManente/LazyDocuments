@@ -39,8 +39,8 @@ object LogInForm: TLogInForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 185
-        Height = 33
+        Width = 521
+        Height = 104
         Align = alClient
         Alignment = taCenter
         Caption = 'LazyDocuments'
@@ -51,6 +51,8 @@ object LogInForm: TLogInForm
         Font.Style = []
         ParentFont = False
         Layout = tlBottom
+        ExplicitWidth = 185
+        ExplicitHeight = 33
       end
     end
     object PBottom: TPanel
@@ -100,7 +102,7 @@ object LogInForm: TLogInForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 46
+            Width = 289
             Height = 19
             Align = alTop
             Alignment = taCenter
@@ -111,6 +113,7 @@ object LogInForm: TLogInForm
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
+            ExplicitWidth = 46
           end
           object PCentral: TPanel
             AlignWithMargins = True
@@ -134,19 +137,21 @@ object LogInForm: TLogInForm
                 AlignWithMargins = True
                 Left = 3
                 Top = 49
-                Width = 50
+                Width = 277
                 Height = 13
                 Align = alTop
                 Caption = 'Password:'
+                ExplicitWidth = 50
               end
               object LUsername: TLabel
                 AlignWithMargins = True
                 Left = 3
                 Top = 3
-                Width = 52
+                Width = 277
                 Height = 13
                 Align = alTop
                 Caption = 'Username:'
+                ExplicitWidth = 52
               end
               object EUsername: TEdit
                 AlignWithMargins = True
@@ -412,9 +417,5 @@ object LogInForm: TLogInForm
       Caption = 'Crea'
       OnExecute = ActionCreaExecute
     end
-  end
-  object Query: TFDQuery
-    Left = 16
-    Top = 56
   end
 end

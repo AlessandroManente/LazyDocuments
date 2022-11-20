@@ -1,15 +1,20 @@
-unit Main;
+unit Forms.Main;
 
 interface
 
 uses
   Database.Manager,
-  LogIn,
+  Forms.Login,
+
   Winapi.Windows,
   Winapi.Messages,
+
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.Actions,
+  System.ImageList,
+
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -17,12 +22,15 @@ uses
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
   Vcl.WinXCtrls,
-  System.Actions,
   Vcl.ActnList,
-  System.ImageList,
   Vcl.ImgList,
   Vcl.CategoryButtons,
   Vcl.Buttons,
+  Vcl.Grids,
+  Vcl.DBGrids,
+
+  Data.DB,
+
   FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat,
   FireDAC.Phys.SQLiteDef,
@@ -37,15 +45,12 @@ uses
   FireDAC.Stan.Pool,
   FireDAC.Stan.Async,
   FireDAC.VCLUI.Wait,
-  Data.DB,
   FireDAC.Comp.Client,
   FireDAC.Stan.Param,
   FireDAC.DatS,
   FireDAC.DApt.Intf,
   FireDAC.DApt,
-  FireDAC.Comp.DataSet,
-  Vcl.Grids,
-  Vcl.DBGrids;
+  FireDAC.Comp.DataSet;
 
 type
   TLazyDocumentsForm = class(TForm)
@@ -137,6 +142,7 @@ var
   Utente: Integer;
 begin
   inherited;
+  Application.ProcessMessages;
   Utente := EffettuaLogin;
   if Utente > 0 then
     SetupDaUtente(Utente)
