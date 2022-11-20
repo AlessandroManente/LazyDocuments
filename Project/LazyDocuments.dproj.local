@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2022/11/19 16:31:02.000.280,=F:\Documenti\Repos\Delphi\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:31:14.000.561,F:\Documenti\Repos\Delphi\Unit1.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\MainForm.pas</Transaction>
+    <Transaction>2022/11/19 16:31:14.000.561,F:\Documenti\Repos\Delphi\Unit1.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\MainForm.dfm</Transaction>
+    <Transaction>2022/11/19 16:31:24.000.897,F:\Documenti\Repos\Delphi\Project1.dproj=F:\Documenti\Repos\Delphi\LazyDocuments\Project\LazyDocuments.dproj</Transaction>
+    <Transaction>2022/11/19 16:45:59.000.376,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:46:17.000.095,F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.pas</Transaction>
+    <Transaction>2022/11/19 16:46:17.000.096,F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.dfm</Transaction>
+    <Transaction>2022/11/19 16:46:35.000.963,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrm.pas</Transaction>
+    <Transaction>2022/11/19 16:46:35.000.963,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrm.dfm</Transaction>
+    <Transaction>2022/11/19 16:46:41.000.228,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrm.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.dfm</Transaction>
+    <Transaction>2022/11/19 16:46:41.000.228,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrm.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.pas</Transaction>
+    <Transaction>2022/11/19 16:56:17.000.960,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:56:29.000.877,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\AggiungiFrame.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:56:29.000.877,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\AggiungiFrame.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.dfm</Transaction>
+    <Transaction>2022/11/19 16:57:59.000.575,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:58:11.000.492,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\ImpostazioniFrame.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 16:58:11.000.492,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\ImpostazioniFrame.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.dfm</Transaction>
+    <Transaction>2022/11/19 17:05:19.000.787,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\AggiungiFrame.pas=</Transaction>
+    <Transaction>2022/11/19 17:05:23.000.118,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\CercaFrame.pas=</Transaction>
+    <Transaction>2022/11/19 17:05:27.000.316,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Frames\ImpostazioniFrame.pas=</Transaction>
+    <Transaction>2022/11/19 19:27:15.000.571,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/19 19:27:41.000.452,F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\ClassDatabaseManager.pas</Transaction>
+    <Transaction>2022/11/20 15:01:02.000.452,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 15:01:33.000.534,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\LogIn.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.dfm</Transaction>
+    <Transaction>2022/11/20 15:01:33.000.534,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\LogIn.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 15:01:41.000.351,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\Main.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\MainForm.pas</Transaction>
+    <Transaction>2022/11/20 15:01:41.000.351,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\Main.dfm=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Forms\MainForm.dfm</Transaction>
+    <Transaction>2022/11/20 17:24:57.000.633,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:25:08.000.919,F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.pas</Transaction>
+    <Transaction>2022/11/20 17:40:06.000.540,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\ClassDatabaseManager.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Database.Manager.pas</Transaction>
+    <Transaction>2022/11/20 17:41:39.481,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:41:57.869,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Database.Query.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:42:06.211,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:42:22.118,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Database.Query.LogIn.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:42:53.986,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.Format.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.pas</Transaction>
+    <Transaction>2022/11/20 17:43:10.330,=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:43:29.681,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.pas=F:\Documenti\Repos\Delphi\LazyDocuments\Project\Unit1.pas</Transaction>
+    <Transaction>2022/11/20 17:43:40.912,F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.Log.Log=F:\Documenti\Repos\Delphi\LazyDocuments\Units\Classes\Utils.Log</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,13 @@
+unit Utils;
+
+interface
+
+uses
+  System.SysUtils,
+  System.DateUtils;
+
+function FormatDateTimeSQLite(Data
+
+implementation
+
+end.

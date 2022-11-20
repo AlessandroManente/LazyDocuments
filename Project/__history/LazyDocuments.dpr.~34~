@@ -1,0 +1,20 @@
+program LazyDocuments;
+
+uses
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Main in '..\Units\Forms\Main.pas' {LazyDocumentsForm},
+  ClassDatabaseManager in '..\Units\Classes\ClassDatabaseManager.pas',
+  LogIn in '..\Units\Forms\LogIn.pas' {LogInForm},
+  Utils in '..\Units\Classes\Utils.pas';
+
+{$R *.res}
+
+begin
+  ReportMemoryLeaksOnShutdown := True;
+
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TLazyDocumentsForm, LazyDocumentsForm);
+  Application.Run;
+end.
