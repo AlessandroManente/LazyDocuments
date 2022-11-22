@@ -5,7 +5,7 @@ interface
 uses
   Database.Manager,
   Database.Query.User,
-  Forms.Login,
+  Utils.Log,
 
   Winapi.Windows,
   Winapi.Messages,
@@ -75,14 +75,19 @@ type
     procedure ActionPCAggiungiExecute(Sender: TObject);
     procedure ActionPCCercaExecute(Sender: TObject);
     procedure ActionPCImpostazioniExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     FIUser: IQueryUser;
+    FUserID: Integer;
     procedure SetTSCerca;
     procedure SetTSAggiungi;
     procedure SetTSImpostazioni;
+    procedure LoadData;
     procedure SetIUser(const Value: IQueryUser);
+    procedure SetUserID(const Value: Integer);
   protected
     property IUser: IQueryUser read FIUser write SetIUser;
+    property UserID: Integer read FUserID write SetUserID;
   public
     procedure SetupDaUtente(Utente: Integer);
   end;
@@ -104,7 +109,6 @@ procedure TLazyDocumentsForm.FormCreate(Sender: TObject);
 begin
   inherited;
   FIUser := GetIQueryUser;
-  SetTSCerca;
 end;
 
 procedure TLazyDocumentsForm.SetIUser(const Value: IQueryUser);
@@ -132,6 +136,11 @@ begin
   //
 end;
 
+procedure TLazyDocumentsForm.SetUserID(const Value: Integer);
+begin
+  FUserID := Value;
+end;
+
 procedure TLazyDocumentsForm.ActionPCAggiungiExecute(Sender: TObject);
 begin
   SetTSAggiungi;
@@ -145,6 +154,40 @@ end;
 procedure TLazyDocumentsForm.ActionPCImpostazioniExecute(Sender: TObject);
 begin
   SetTSImpostazioni;
+end;
+
+procedure TLazyDocumentsForm.FormShow(Sender: TObject);
+begin
+  inherited;
+  LoadData;
+end;
+
+procedure TLazyDocumentsForm.LoadData;
+const
+  MName = 'LoadData';
+var
+  Msg: String;
+begin
+  if not IUser.GetUtenteCorrente(FUserID) then
+    begin
+      Msg := 'Utente corrente non trovato.' + sLineBreak +
+        'Il programma si chiuderà premendo OK. Riprovare l''accesso';
+      ShowMessage(Msg);
+      Logger.AddLog(Self.ClassName, MName, Msg);
+      Close;
+    end
+  else if UserID <= 0 then
+    begin
+      Msg := 'Utente corrente non valido.' + sLineBreak +
+        'Il programma si chiuderà premendo OK. Riprovare l''accesso';
+      ShowMessage(Msg);
+      Logger.AddLog(Self.ClassName, MName, Msg);
+      Close;
+    end
+  else
+    begin
+
+    end;
 end;
 
 end.

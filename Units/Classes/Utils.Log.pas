@@ -13,7 +13,7 @@ uses
 type
   ILogger = interface
     ['{81D5A5ED-8A52-48DC-A542-D61BDBE0B6E9}']
-    procedure AddLog(Log: String);
+    procedure AddLog(Oggetto, NomeFun, Log: String);
   end;
 
 function Logger: ILogger;
@@ -24,21 +24,24 @@ type
   TLogger = class(TInterfacedObject, ILogger)
   private
     function CreaCartellaLog(Path: String): Boolean;
+    function GetFileName: String;
   public
-    procedure AddLog(Log: String);
+    procedure AddLog(Oggetto, NomeFun, Log: String);
   end;
 
-{ TLogger }
+  { TLogger }
 
-procedure TLogger.AddLog(Log: String);
+procedure TLogger.AddLog(Oggetto, NomeFun, Log: String);
 var
   FileName: String;
+  Riga: String;
 begin
-  FileName := TLazyFormat.CartellaCorrente + 'LOG';
-  if CreaCartellaLog(FileName) then
+  FileName := GetFileName;
+  if FileName <> '' then
     begin
-      FileName := FileName + TLazyFormat.FormatDateLog(Now);
-      TFile.AppendAllText(FileName, Log + sLineBreak);
+      Riga := Format('[%s - %s - ' + TLazyFormat.FormatDateTimeSQLite(Now) + '] %s',
+        [Oggetto, NomeFun, Log]) + sLineBreak;
+      TFile.AppendAllText(FileName, Riga);
     end;
 end;
 
@@ -47,6 +50,15 @@ begin
   Result := False;
   if ForceDirectories(Path) then
     Result := True;
+end;
+
+function TLogger.GetFileName: String;
+var
+  FileName: String;
+begin
+  Result := '';
+  if CreaCartellaLog(FileName) then
+    Result := TLazyFormat.CartellaCorrente + 'LOG' + TLazyFormat.FormatDateLog(Now);
 end;
 
 { Global Function }

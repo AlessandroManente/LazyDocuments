@@ -4,6 +4,7 @@ interface
 
 uses
   Database.Query.User,
+  Utils.Log,
 
   Winapi.Windows,
   Winapi.Messages,
@@ -131,47 +132,68 @@ begin
 end;
 
 procedure TLogInForm.ActionAccediExecute(Sender: TObject);
+const
+  MName = 'ActionAccediExecute';
 var
   UserID: Integer;
+  Msg: String;
+  OK: Boolean;
 begin
+  OK := False;
   if EUsername.Text = '' then
-    ShowMessage('Inserisci un username')
+    Msg := 'Inserisci un username'
   else if EPassword.Text = '' then
-    ShowMessage('Inserisci una password')
+    Msg := 'Inserisci una password'
+  else if not IUser.GetDatiUtenteDaUserPass(EUsername.Text, EPassword.Text, UserID) then
+    Msg := 'Impossibile trovare utente'
+  else if UserID = 0 then
+    Msg := 'Utente corrente non esiste o la password inserita non è corretta'
   else
     begin
-      UserID := IUser.GetDatiUtenteDaUserPass(EUsername.Text, EPassword.Text);
-      if UserID > 0 then
-        begin
-          IUser.CreaLogInEvent(UserID, CBRicordami.Checked);
-          ModalResult := UserID;
-          IUser.ImpostaUtenteCorrente(UserID);
-        end
+      OK := True;
+      IUser.CreaLogInEvent(UserID, CBRicordami.Checked);
+      IUser.ImpostaUtenteCorrente(UserID);
+      Msg := 'Utente trovato e impostato come utente corrente';
     end;
+  Logger.AddLog(Self.ClassName, MName, Msg);
+  if not OK then
+    ShowMessage(Msg)
+  else
+    ModalResult := UserID;
 end;
 
 procedure TLogInForm.ActionCreaExecute(Sender: TObject);
+const
+  MName = 'ActionCreaExecute';
 var
   UserID: Integer;
+  Msg: String;
+  OK: Boolean;
 begin
+  OK := False;
   if EUsernameCrea.Text = '' then
-    ShowMessage('Inserisci un username')
+    Msg := 'Inserisci un username'
   else if EPasswordCrea1.Text = '' then
-    ShowMessage('Inserisci una password')
+    Msg := 'Inserisci una password'
   else if EPasswordCrea2.Text = '' then
-    ShowMessage('Inserisci la password di conferma')
+    Msg := 'Inserisci la password di conferma'
   else if EPasswordCrea1.Text <> EPasswordCrea2.Text then
-    ShowMessage('Le due password inserite non coincidono')
+    Msg := 'Le due password inserite non coincidono'
+  else if not IUser.CreaUtente(EUsernameCrea.Text, EPasswordCrea1.Text, UserID) then
+    Msg := 'Impossibile creare l''utente'
+  else if UserID = -1 then
+    Msg := 'Utente non creato'
   else
     begin
-      UserID := IUser.CreaUtente(EUsernameCrea.Text, EPasswordCrea1.Text);
-      if UserID > -1 then
-        begin
-          IUser.CreaLogInEvent(UserID, CBRicordamiCrea.Checked);
-          ModalResult := UserID;
-          IUser.ImpostaUtenteCorrente(UserID);
-        end;
-    end
+      IUser.CreaLogInEvent(UserID, CBRicordamiCrea.Checked);
+      IUser.ImpostaUtenteCorrente(UserID);
+      Msg := 'Utente creato correttamente';
+    end;
+  Logger.AddLog(Self.ClassName, MName, Msg);
+  if not OK then
+    ShowMessage(Msg)
+  else
+    ModalResult := UserID;
 end;
 
 procedure TLogInForm.ActionEsciExecute(Sender: TObject);
@@ -180,17 +202,23 @@ begin
 end;
 
 procedure TLogInForm.CaricaDatiUtenteAccedi;
+const
+  MName = 'CaricaDatiUtenteAccedi';
 var
   UserID: Integer;
   Username, Password: String;
+  Msg: String;
 begin
-  UserID := IUser.UtenteUltimoEvento;
-  if (UserID > 0) and IUser.GetDatiUtenteDaID(UserID, Username, Password) then
+  if not  IUser.UtenteUltimoEvento(UserID) then
+    Msg := 'Impossibile ottenere dati su ultimi eventi di login'
+  else if (UserID > 0) and IUser.GetDatiUtenteDaID(UserID, Username, Password) then
     begin
       EUsername.Text := Username;
       EPassword.Text := Password;
       CBRicordami.Checked := True;
+      Msg := 'Dati utente ultimo evento caricati';
     end;
+  Logger.AddLog(Self.ClassName, MName, Msg);
 end;
 
 procedure TLogInForm.CreateParams(var Params: TCreateParams);
@@ -206,13 +234,13 @@ end;
 
 procedure TLogInForm.ImpostaLogin;
 begin
-  if IUser.UtentiPresenti > 0 then
+  if not IUser.UtentiPresenti then
+    PC.ActivePage := TSCrea
+  else
     begin
       PC.ActivePage := TSAccedi;
       CaricaDatiUtenteAccedi;
-    end
-  else
-    PC.ActivePage := TSCrea;
+    end;
 end;
 
 procedure TLogInForm.SetIUser(const Value: IQueryUser);
