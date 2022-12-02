@@ -5,16 +5,20 @@ interface
 uses
   Database.Manager,
   Database.Query.User,
+  Database.Query.Files,
+  Utils.Format,
   Utils.Log,
 
   Winapi.Windows,
   Winapi.Messages,
+  Winapi.ShellAPI,
 
   System.SysUtils,
   System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
+  System.StrUtils,
 
   Vcl.Graphics,
   Vcl.Controls,
@@ -29,6 +33,7 @@ uses
   Vcl.Buttons,
   Vcl.Grids,
   Vcl.DBGrids,
+  Vcl.StdCtrls,
 
   Data.DB,
 
@@ -51,12 +56,16 @@ uses
   FireDAC.DatS,
   FireDAC.DApt.Intf,
   FireDAC.DApt,
-  FireDAC.Comp.DataSet;
+  FireDAC.Comp.DataSet,
+  Vcl.Mask,
+  Vcl.DBCtrls,
+  Vcl.CheckLst,
+  Datasnap.DBClient;
 
 type
   TLazyDocumentsForm = class(TForm)
     SplitView: TSplitView;
-    PageCon: TPageControl;
+    PCMain: TPageControl;
     ActList: TActionList;
     BtnImpostazioni: TSpeedButton;
     BtnAggiungi: TSpeedButton;
@@ -68,29 +77,103 @@ type
     ActionPCAggiungi: TAction;
     ActionPCImpostazioni: TAction;
     PCercaBase: TPanel;
-    PAggiungiBase: TPanel;
+    PDropBase: TPanel;
     PImpostazioniBase: TPanel;
+    LDragFile: TLabel;
+    SBAggiungiFile: TSpeedButton;
+    ActionAggiungiFile: TAction;
+    PCAggiungiFiles: TPageControl;
+    TSDropFiles: TTabSheet;
+    TSAddFiles: TTabSheet;
+    PAddFilesBase: TPanel;
+    DSAddFiles: TDataSource;
+    PAddFilesMiddle: TPanel;
+    PAddFilesBottom: TPanel;
+    PAddFilesTop: TPanel;
+    SBSaveFiles: TSpeedButton;
+    SBAnnullaSaveFiles: TSpeedButton;
+    SBNextFile: TSpeedButton;
+    SBPrevFile: TSpeedButton;
+    LCurFile: TLabel;
+    ActionPrevFile: TAction;
+    ActionNextFile: TAction;
+    ActionSaveFiles: TAction;
+    ActionAnnullaSaveFiles: TAction;
+    DBEPathAddFiles: TDBEdit;
+    LPathAddFiles: TLabel;
+    LSezioneAddFiles: TLabel;
+    LSottosezioneAddFiles: TLabel;
+    LTagAddFiles: TLabel;
+    CLBTagAddFiles: TCheckListBox;
+    LAddTagAddFiles: TLabel;
+    ENewTag: TEdit;
+    SBAddTagAddFiles: TSpeedButton;
+    LAddSezioneAddFiles: TLabel;
+    ENewSezione: TEdit;
+    SBAddSezioneAddFiles: TSpeedButton;
+    LAddSottosezioneAddFiles: TLabel;
+    ENewSottoSezione: TEdit;
+    SBAddSottosezioneAddFiles: TSpeedButton;
+    ActionAddTag: TAction;
+    ActionAddSezione: TAction;
+    ActionAddSottosezione: TAction;
+    CBSezioneAddFiles: TComboBox;
+    CBSottosezioneAddFiles: TComboBox;
+    CDAddFiles: TClientDataSet;
+    procedure ActionAddSezioneExecute(Sender: TObject);
+    procedure ActionAddSottosezioneExecute(Sender: TObject);
+    procedure ActionAddTagExecute(Sender: TObject);
+    procedure ActionAggiungiFileExecute(Sender: TObject);
+    procedure ActionAnnullaSaveFilesExecute(Sender: TObject);
+    procedure ActionNextFileExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ActionPCAggiungiExecute(Sender: TObject);
     procedure ActionPCCercaExecute(Sender: TObject);
     procedure ActionPCImpostazioniExecute(Sender: TObject);
+    procedure ActionPrevFileExecute(Sender: TObject);
+    procedure ActionSaveFilesExecute(Sender: TObject);
+    procedure CBSezioneAddFilesChange(Sender: TObject);
+    procedure CBSottosezioneAddFilesChange(Sender: TObject);
+    procedure CLBTagAddFilesClickCheck(Sender: TObject);
+    procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure TSAddFilesShow(Sender: TObject);
   private
     FIUser: IQueryUser;
     FUserID: Integer;
+    FIFiles: IQueryFiles;
     procedure SetTSCerca;
     procedure SetTSAggiungi;
     procedure SetTSImpostazioni;
     procedure LoadData;
+    procedure ResizeForm;
+    procedure LoadCBSezioni;
+    procedure LoadCBSottosezioni;
+    procedure LoadCLBTag;
+    function GetCheckedTags: String;
+    procedure UpdateTSAddFiles;
+    procedure CaricaFilesSuCDAddFiles(List: TStrings);
+    procedure SetFieldMTAddFiles(Field, Value: String);
+    procedure AggiungiDroppedFiles(NumFiles: Integer; var Msg: TWMDropFiles);
+    procedure ResizeAggiungiButton(W, H: Integer);
     procedure SetIUser(const Value: IQueryUser);
     procedure SetUserID(const Value: Integer);
+    procedure SetIFiles(const Value: IQueryFiles);
   protected
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    procedure CreateWnd; override;
+    procedure DestroyWnd; override;
     property IUser: IQueryUser read FIUser write SetIUser;
+    property IFiles: IQueryFiles read FIFiles write SetIFiles;
     property UserID: Integer read FUserID write SetUserID;
   public
     procedure SetupDaUtente(Utente: Integer);
   end;
+
+const
+  FormWidth = 776;
+  FormHeight = 499;
 
 var
   LazyDocumentsForm: TLazyDocumentsForm;
@@ -98,6 +181,75 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TLazyDocumentsForm.ActionAddSezioneExecute(Sender: TObject);
+begin
+  if ENewSezione.Text = '' then
+    ShowMessage('Inserire il nome di una sezione da aggiungere')
+  else if IFiles.EsisteSezione(ENewSezione.Text) then
+    ShowMessage('Sezione con questo nome già esistente')
+  else if not IFiles.AddSezione(ENewSezione.Text) then
+    ShowMessage('Impossibile creare nuova sezione')
+  else
+    LoadCBSezioni;
+end;
+
+procedure TLazyDocumentsForm.ActionAddSottosezioneExecute(Sender: TObject);
+begin
+  if CBSezioneAddFiles.Text = '' then
+    ShowMessage('Aggiungere una Sezione per la sottosezione')
+  else if not IFiles.EsisteSezione(CBSezioneAddFiles.Text) then
+    ShowMessage('Sezione indicata non esiste')
+  else if ENewSottoSezione.Text = '' then
+    ShowMessage('Inserire il nome di una sottosezione da aggiungere')
+  else if IFiles.EsisteSottosezione(ENewSottoSezione.Text) then
+    ShowMessage('Sottosezione con questo nome già esistente')
+  else if not IFiles.AddSottosezione(CBSezioneAddFiles.Text, ENewSottoSezione.Text) then
+    ShowMessage('Impossibile creare nuova sottosezione')
+  else
+    LoadCBSottosezioni;
+end;
+
+procedure TLazyDocumentsForm.ActionAddTagExecute(Sender: TObject);
+begin
+  if ENewTag.Text = '' then
+    ShowMessage('Inserire il nome di un Tag da aggiungere')
+  else if IFiles.EsisteTag(ENewTag.Text) then
+    ShowMessage('Tag con questo nome già esistente')
+  else if not IFiles.AddTag(ENewTag.Text) then
+    ShowMessage('Impossibile creare nuovo Tag')
+  else
+    LoadCLBTag;
+end;
+
+procedure TLazyDocumentsForm.ActionAggiungiFileExecute(Sender: TObject);
+var
+  Dg: TFileOpenDialog;
+begin
+  Dg := TFileOpenDialog.Create(nil);
+  try
+    Dg.Options := Dg.Options + [fdoAllowMultiSelect];
+    if Dg.Execute and (Dg.Files.Count > 0) then
+      begin
+        CaricaFilesSuCDAddFiles(Dg.Files);
+        PCAggiungiFiles.ActivePage := TSAddFiles;
+      end;
+  finally
+    Dg.Free;
+  end;
+end;
+
+procedure TLazyDocumentsForm.ActionAnnullaSaveFilesExecute(Sender: TObject);
+begin
+  PCAggiungiFiles.ActivePage := TSDropFiles;
+  CDAddFiles.EmptyDataSet;
+end;
+
+procedure TLazyDocumentsForm.ActionNextFileExecute(Sender: TObject);
+begin
+  CDAddFiles.Next;
+  UpdateTSAddFiles;
+end;
 
 procedure TLazyDocumentsForm.FormDestroy(Sender: TObject);
 begin
@@ -108,7 +260,19 @@ end;
 procedure TLazyDocumentsForm.FormCreate(Sender: TObject);
 begin
   inherited;
+  ChangeWindowMessageFilter(WM_DROPFILES, MSGFLT_ADD);
+  ChangeWindowMessageFilter(WM_COPYDATA, MSGFLT_ADD);
+  ChangeWindowMessageFilter($0049, MSGFLT_ADD);
+
+  PCMain.ActivePage := TSCerca;
+
   FIUser := GetIQueryUser;
+  FIFiles := GetIQueryFiles;
+end;
+
+procedure TLazyDocumentsForm.SetIFiles(const Value: IQueryFiles);
+begin
+  FIFiles := Value;
 end;
 
 procedure TLazyDocumentsForm.SetIUser(const Value: IQueryUser);
@@ -116,19 +280,27 @@ begin
   FIUser := Value;
 end;
 
+procedure TLazyDocumentsForm.SetFieldMTAddFiles(Field, Value: String);
+begin
+  CDAddFiles.Edit;
+  CDAddFiles.FieldByName(Field).AsString := Value;
+  CDAddFiles.Post;
+end;
+
 procedure TLazyDocumentsForm.SetTSAggiungi;
 begin
-  PageCon.ActivePage := TSAggiungi;
+  PCMain.ActivePage := TSAggiungi;
+  PCAggiungiFiles.ActivePage := TSDropFiles;
 end;
 
 procedure TLazyDocumentsForm.SetTSCerca;
 begin
-  PageCon.ActivePage := TSCerca;
+  PCMain.ActivePage := TSCerca;
 end;
 
 procedure TLazyDocumentsForm.SetTSImpostazioni;
 begin
-  PageCon.ActivePage := TSImpostazioni;
+  PCMain.ActivePage := TSImpostazioni;
 end;
 
 procedure TLazyDocumentsForm.SetupDaUtente(Utente: Integer);
@@ -139,6 +311,26 @@ end;
 procedure TLazyDocumentsForm.SetUserID(const Value: Integer);
 begin
   FUserID := Value;
+end;
+
+procedure TLazyDocumentsForm.WMDropFiles(var Msg: TWMDropFiles);
+var
+  NumFiles: Integer;
+begin
+  NumFiles := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, 0);
+  if NumFiles > 0 then
+    begin
+      Application.BringToFront;
+      case PCMain.ActivePageIndex of
+        2:
+          begin
+            AggiungiDroppedFiles(NumFiles, Msg);
+            PCAggiungiFiles.ActivePage := TSAddFiles;
+          end;
+      end;
+
+      DragFinish(Msg.Drop);
+    end;
 end;
 
 procedure TLazyDocumentsForm.ActionPCAggiungiExecute(Sender: TObject);
@@ -156,10 +348,165 @@ begin
   SetTSImpostazioni;
 end;
 
+procedure TLazyDocumentsForm.ActionPrevFileExecute(Sender: TObject);
+begin
+  CDAddFiles.Prior;
+  UpdateTSAddFiles;
+end;
+
+procedure TLazyDocumentsForm.ActionSaveFilesExecute(Sender: TObject);
+var
+  UserID: Integer;
+begin
+  if not IUser.GetUtenteCorrente(UserID) then
+    ShowMessage('Impossibile ottenere utente corrente')
+  else if not IFiles.AddFiles(CDAddFiles, UserID) then
+    ShowMessage('Impossime aggiungere nuovi files')
+  else
+    begin
+      ShowMessage('Files salvati');
+      PCAggiungiFiles.ActivePage := TSDropFiles;
+      PCMain.ActivePage := TSCerca;
+    end;
+end;
+
+procedure TLazyDocumentsForm.AggiungiDroppedFiles(NumFiles: Integer; var Msg: TWMDropFiles);
+var
+  buf: array [0 .. MAX_PATH] of char;
+  List: TStrings;
+  I: Integer;
+begin
+  List := TStringList.Create;
+  try
+    for I := 0 to NumFiles - 1 do
+      if DragQueryFile(Msg.Drop, I, buf, MAX_PATH) <> 0 then
+        List.Add(buf);
+    CaricaFilesSuCDAddFiles(List);
+  finally
+    List.Free;
+  end;
+end;
+
+procedure TLazyDocumentsForm.CaricaFilesSuCDAddFiles(List: TStrings);
+var
+  I: Integer;
+begin
+  CDAddFiles.DisableControls;
+  CDAddFiles.EmptyDataSet;
+  try
+    for I := 0 to List.Count - 1 do
+      begin
+        CDAddFiles.Append;
+        CDAddFiles.FieldByName('FULL_PATH').AsString := List[I];
+        CDAddFiles.Post;
+      end;
+  finally
+    CDAddFiles.First;
+    CDAddFiles.EnableControls;
+  end;
+end;
+
+procedure TLazyDocumentsForm.CBSezioneAddFilesChange(Sender: TObject);
+begin
+  SetFieldMTAddFiles('SECTION', CBSezioneAddFiles.Text);
+  UpdateTSAddFiles;
+end;
+
+procedure TLazyDocumentsForm.CBSottosezioneAddFilesChange(Sender: TObject);
+begin
+  SetFieldMTAddFiles('SUBSECTION', CBSottosezioneAddFiles.Text);
+end;
+
+procedure TLazyDocumentsForm.CLBTagAddFilesClickCheck(Sender: TObject);
+var
+  Tags: String;
+begin
+  Tags := GetCheckedTags;
+  SetFieldMTAddFiles('TAGS', Tags);
+end;
+
+procedure TLazyDocumentsForm.CreateWnd;
+begin
+  inherited;
+  DragAcceptFiles(Handle, true);
+end;
+
+procedure TLazyDocumentsForm.DestroyWnd;
+begin
+  DragAcceptFiles(Handle, false);
+  inherited;
+end;
+
+procedure TLazyDocumentsForm.FormResize(Sender: TObject);
+begin
+  ResizeForm;
+end;
+
 procedure TLazyDocumentsForm.FormShow(Sender: TObject);
 begin
   inherited;
   LoadData;
+end;
+
+function TLazyDocumentsForm.GetCheckedTags: String;
+var
+  I: Integer;
+begin
+  Result := '';
+  for I := 0 to CLBTagAddFiles.Count - 1 do
+    if CLBTagAddFiles.Checked[I] then
+      Result := Result + CLBTagAddFiles.Items[I] + ';';
+  Result := Copy(Result, 1, System.Length(Result) - 1);
+end;
+
+procedure TLazyDocumentsForm.LoadCBSezioni;
+var
+  List: TStrings;
+begin
+  List := TStringList.Create;
+  try
+    if IFiles.GetSezioni(List) then
+      CBSezioneAddFiles.Items.Assign(List);
+    CBSezioneAddFiles.Text := CDAddFiles.FieldByName('SECTION').AsString;
+  finally
+    List.Free;
+  end;
+end;
+
+procedure TLazyDocumentsForm.LoadCBSottosezioni;
+var
+  List: TStrings;
+  Sezione: String;
+begin
+  Sezione := CBSezioneAddFiles.Text;
+  if Sezione <> '' then
+    begin
+      List := TStringList.Create;
+      try
+        if IFiles.GetSottosezioni(List) then
+          CBSottosezioneAddFiles.Items.Assign(List);
+        CBSottosezioneAddFiles.Text := CDAddFiles.FieldByName('SUBSECTION').AsString;
+      finally
+        List.Free;
+      end;
+    end;
+end;
+
+procedure TLazyDocumentsForm.LoadCLBTag;
+var
+  List: TStrings;
+  I: Integer;
+begin
+  List := TStringList.Create;
+  try
+    if IFiles.GetTag(List) then
+      CLBTagAddFiles.Items.Assign(List);
+    for I := 0 to CLBTagAddFiles.Count - 1 do
+      CLBTagAddFiles.Checked[I] := ContainsText(CDAddFiles.FieldByName('TAGS').AsString,
+        CLBTagAddFiles.Items[I]);
+  finally
+    List.Free;
+  end;
 end;
 
 procedure TLazyDocumentsForm.LoadData;
@@ -186,8 +533,38 @@ begin
     end
   else
     begin
-
+      CDAddFiles.CreateDataSet;
+      CDAddFiles.Open;
     end;
+end;
+
+procedure TLazyDocumentsForm.ResizeAggiungiButton(W, H: Integer);
+begin
+  SBAggiungiFile.Left := Round(W / 2 - 67);
+  SBAggiungiFile.Top := Round(H / 2);
+end;
+
+procedure TLazyDocumentsForm.ResizeForm;
+begin
+  if Width < FormWidth then
+    Width := FormWidth;
+  if Height < FormHeight then
+    Height := FormHeight;
+
+  ResizeAggiungiButton(PDropBase.Width, PDropBase.Height);
+end;
+
+procedure TLazyDocumentsForm.TSAddFilesShow(Sender: TObject);
+begin
+  UpdateTSAddFiles;
+end;
+
+procedure TLazyDocumentsForm.UpdateTSAddFiles;
+begin
+  LCurFile.Caption :=  '/' + IntToStr(CDAddFiles.RecordCount);
+  LoadCBSezioni;
+  LoadCBSottosezioni;
+  LoadCLBTag;
 end;
 
 end.

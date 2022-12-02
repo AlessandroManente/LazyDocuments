@@ -90,7 +90,7 @@ object LogInForm: TLogInForm
         Top = 3
         Width = 309
         Height = 269
-        ActivePage = TSAccedi
+        ActivePage = TSCrea
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2

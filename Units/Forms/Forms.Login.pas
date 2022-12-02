@@ -188,6 +188,7 @@ begin
       IUser.CreaLogInEvent(UserID, CBRicordamiCrea.Checked);
       IUser.ImpostaUtenteCorrente(UserID);
       Msg := 'Utente creato correttamente';
+      OK := True;
     end;
   Logger.AddLog(Self.ClassName, MName, Msg);
   if not OK then

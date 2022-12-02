@@ -37,7 +37,7 @@ var
   Riga: String;
 begin
   FileName := GetFileName;
-  if FileName <> '' then
+  if (FileName <> '') and CreaCartellaLog(ExtractFilePath(FileName)) then
     begin
       Riga := Format('[%s - %s - ' + TLazyFormat.FormatDateTimeSQLite(Now) + '] %s',
         [Oggetto, NomeFun, Log]) + sLineBreak;
@@ -53,12 +53,8 @@ begin
 end;
 
 function TLogger.GetFileName: String;
-var
-  FileName: String;
 begin
-  Result := '';
-  if CreaCartellaLog(FileName) then
-    Result := TLazyFormat.CartellaCorrente + 'LOG' + TLazyFormat.FormatDateLog(Now);
+  Result := TLazyFormat.CartellaCorrente + 'LOG\' + TLazyFormat.FormatDateLog(Now) + '.log';
 end;
 
 { Global Function }

@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  System.Classes,
   System.DateUtils;
 
 type
@@ -12,6 +13,8 @@ type
     class function FormatDateTimeSQLite(Data: TDateTime): String; static;
     class function CartellaCorrente: String; static;
     class function FormatDateLog(Data: TDateTime): String; static;
+    class procedure DaStringaALista(Stringa: String; Separatore: Char; var List:
+        TStrings);
   end;
 
 implementation
@@ -19,6 +22,21 @@ implementation
 class function TLazyFormat.CartellaCorrente: String;
 begin
   Result := ExtractFilePath(ParamStr(0));
+end;
+
+class procedure TLazyFormat.DaStringaALista(Stringa: String; Separatore: Char;
+    var List: TStrings);
+var
+  Temp: TStrings;
+begin
+  Temp := TStringList.Create;
+  try
+    Temp.Delimiter := Separatore;
+    Temp.DelimitedText := Stringa;
+    List.Assign(Temp);
+  finally
+    Temp.Free;
+  end;
 end;
 
 class function TLazyFormat.FormatDateLog(Data: TDateTime): String;
