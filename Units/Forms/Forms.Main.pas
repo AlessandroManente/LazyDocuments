@@ -143,6 +143,7 @@ type
     FIUser: IQueryUser;
     FUserID: Integer;
     FIFiles: IQueryFiles;
+    FCurrentAddedFile: Integer;
     procedure SetTSCerca;
     procedure SetTSAggiungi;
     procedure SetTSImpostazioni;
@@ -153,6 +154,7 @@ type
     procedure LoadCLBTag;
     function GetCheckedTags: String;
     procedure UpdateTSAddFiles;
+    procedure UpdateCurrentAddedFile(Op: String; TotFiles: Integer);
     procedure CaricaFilesSuCDAddFiles(List: TStrings);
     procedure SetFieldMTAddFiles(Field, Value: String);
     procedure AggiungiDroppedFiles(NumFiles: Integer; var Msg: TWMDropFiles);
@@ -160,6 +162,7 @@ type
     procedure SetIUser(const Value: IQueryUser);
     procedure SetUserID(const Value: Integer);
     procedure SetIFiles(const Value: IQueryFiles);
+    procedure SetCurrentAddedFile(const Value: Integer);
   protected
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
     procedure CreateWnd; override;
@@ -167,6 +170,7 @@ type
     property IUser: IQueryUser read FIUser write SetIUser;
     property IFiles: IQueryFiles read FIFiles write SetIFiles;
     property UserID: Integer read FUserID write SetUserID;
+    property CurrentAddedFile: Integer read FCurrentAddedFile write SetCurrentAddedFile;
   public
     procedure SetupDaUtente(Utente: Integer);
   end;
@@ -248,6 +252,7 @@ end;
 procedure TLazyDocumentsForm.ActionNextFileExecute(Sender: TObject);
 begin
   CDAddFiles.Next;
+  UpdateCurrentAddedFile('NEXT', CDAddFiles.RecordCount);
   UpdateTSAddFiles;
 end;
 
@@ -268,6 +273,8 @@ begin
 
   FIUser := GetIQueryUser;
   FIFiles := GetIQueryFiles;
+
+  CurrentAddedFile := 1;
 end;
 
 procedure TLazyDocumentsForm.SetIFiles(const Value: IQueryFiles);
@@ -278,6 +285,11 @@ end;
 procedure TLazyDocumentsForm.SetIUser(const Value: IQueryUser);
 begin
   FIUser := Value;
+end;
+
+procedure TLazyDocumentsForm.SetCurrentAddedFile(const Value: Integer);
+begin
+  FCurrentAddedFile := Value;
 end;
 
 procedure TLazyDocumentsForm.SetFieldMTAddFiles(Field, Value: String);
@@ -322,13 +334,12 @@ begin
     begin
       Application.BringToFront;
       case PCMain.ActivePageIndex of
-        2:
+        1:
           begin
             AggiungiDroppedFiles(NumFiles, Msg);
             PCAggiungiFiles.ActivePage := TSAddFiles;
           end;
       end;
-
       DragFinish(Msg.Drop);
     end;
 end;
@@ -351,6 +362,7 @@ end;
 procedure TLazyDocumentsForm.ActionPrevFileExecute(Sender: TObject);
 begin
   CDAddFiles.Prior;
+  UpdateCurrentAddedFile('PRIOR', CDAddFiles.RecordCount);
   UpdateTSAddFiles;
 end;
 
@@ -408,19 +420,23 @@ end;
 
 procedure TLazyDocumentsForm.CBSezioneAddFilesChange(Sender: TObject);
 begin
+  inherited;
   SetFieldMTAddFiles('SECTION', CBSezioneAddFiles.Text);
   UpdateTSAddFiles;
 end;
 
 procedure TLazyDocumentsForm.CBSottosezioneAddFilesChange(Sender: TObject);
 begin
+  inherited;
   SetFieldMTAddFiles('SUBSECTION', CBSottosezioneAddFiles.Text);
+  UpdateTSAddFiles;
 end;
 
 procedure TLazyDocumentsForm.CLBTagAddFilesClickCheck(Sender: TObject);
 var
   Tags: String;
 begin
+  inherited;
   Tags := GetCheckedTags;
   SetFieldMTAddFiles('TAGS', Tags);
 end;
@@ -467,7 +483,7 @@ begin
   try
     if IFiles.GetSezioni(List) then
       CBSezioneAddFiles.Items.Assign(List);
-    CBSezioneAddFiles.Text := CDAddFiles.FieldByName('SECTION').AsString;
+    CBSezioneAddFiles.ItemIndex := List.IndexOf(CDAddFiles.FieldByName('SECTION').AsString);
   finally
     List.Free;
   end;
@@ -485,7 +501,8 @@ begin
       try
         if IFiles.GetSottosezioni(List) then
           CBSottosezioneAddFiles.Items.Assign(List);
-        CBSottosezioneAddFiles.Text := CDAddFiles.FieldByName('SUBSECTION').AsString;
+        CBSottosezioneAddFiles.ItemIndex :=
+          List.IndexOf(CDAddFiles.FieldByName('SUBSECTION').AsString);
       finally
         List.Free;
       end;
@@ -559,9 +576,17 @@ begin
   UpdateTSAddFiles;
 end;
 
+procedure TLazyDocumentsForm.UpdateCurrentAddedFile(Op: String; TotFiles: Integer);
+begin
+  if (Op = 'NEXT') and (CurrentAddedFile < TotFiles) then
+    Inc(FCurrentAddedFile)
+  else if (Op = 'PRIOR') and (CurrentAddedFile > 1) then
+    Dec(FCurrentAddedFile);
+end;
+
 procedure TLazyDocumentsForm.UpdateTSAddFiles;
 begin
-  LCurFile.Caption :=  '/' + IntToStr(CDAddFiles.RecordCount);
+  LCurFile.Caption := IntToStr(CurrentAddedFile) + '/' + IntToStr(CDAddFiles.RecordCount);
   LoadCBSezioni;
   LoadCBSottosezioni;
   LoadCLBTag;

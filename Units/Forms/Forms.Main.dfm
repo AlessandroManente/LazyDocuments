@@ -21,7 +21,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 76
+    Width = 50
     Height = 454
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -37,7 +37,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
       AlignWithMargins = True
       Left = 3
       Top = 425
-      Width = 70
+      Width = 44
       Height = 26
       Action = ActionPCImpostazioni
       Align = alBottom
@@ -49,7 +49,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
       AlignWithMargins = True
       Left = 3
       Top = 35
-      Width = 70
+      Width = 44
       Height = 26
       Action = ActionPCAggiungi
       Align = alTop
@@ -61,7 +61,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 70
+      Width = 44
       Height = 26
       Action = ActionPCCerca
       Align = alTop
@@ -70,16 +70,14 @@ object LazyDocumentsForm: TLazyDocumentsForm
   end
   object PCMain: TPageControl
     AlignWithMargins = True
-    Left = 85
+    Left = 59
     Top = 3
-    Width = 680
+    Width = 706
     Height = 454
     ActivePage = TSAggiungi
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitLeft = 59
-    ExplicitWidth = 698
     object TSCerca: TTabSheet
       AlignWithMargins = True
       Caption = 'TSCerca'
@@ -88,12 +86,11 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 660
+        Width = 686
         Height = 432
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 678
       end
     end
     object TSAggiungi: TTabSheet
@@ -105,14 +102,13 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 660
+        Width = 686
         Height = 432
         ActivePage = TSAddFiles
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
         StyleElements = [seFont, seClient]
-        ExplicitWidth = 678
         object TSDropFiles: TTabSheet
           AlignWithMargins = True
           Caption = 'TSDropFiles'
@@ -121,16 +117,15 @@ object LazyDocumentsForm: TLazyDocumentsForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 640
+            Width = 666
             Height = 410
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 658
             object LDragFile: TLabel
               Left = 0
               Top = 0
-              Width = 640
+              Width = 666
               Height = 410
               Align = alClient
               Alignment = taCenter
@@ -170,27 +165,25 @@ object LazyDocumentsForm: TLazyDocumentsForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 640
+            Width = 666
             Height = 410
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 658
             object PAddFilesMiddle: TPanel
               AlignWithMargins = True
               Left = 3
               Top = 43
-              Width = 634
+              Width = 660
               Height = 324
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 652
               object LPathAddFiles: TLabel
                 AlignWithMargins = True
                 Left = 3
                 Top = 3
-                Width = 628
+                Width = 654
                 Height = 13
                 Align = alTop
                 Caption = 'Nome File:'
@@ -263,13 +256,12 @@ object LazyDocumentsForm: TLazyDocumentsForm
                 AlignWithMargins = True
                 Left = 3
                 Top = 22
-                Width = 628
+                Width = 654
                 Height = 21
                 Align = alTop
                 DataField = 'FULL_PATH'
                 DataSource = DSAddFiles
                 TabOrder = 0
-                ExplicitWidth = 646
               end
               object CLBTagAddFiles: TCheckListBox
                 Left = 3
@@ -322,15 +314,14 @@ object LazyDocumentsForm: TLazyDocumentsForm
               AlignWithMargins = True
               Left = 3
               Top = 373
-              Width = 634
+              Width = 660
               Height = 34
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 1
-              ExplicitWidth = 652
               object SBSaveFiles: TSpeedButton
                 AlignWithMargins = True
-                Left = 561
+                Left = 587
                 Top = 3
                 Width = 70
                 Height = 28
@@ -354,15 +345,14 @@ object LazyDocumentsForm: TLazyDocumentsForm
               AlignWithMargins = True
               Left = 3
               Top = 3
-              Width = 634
+              Width = 660
               Height = 34
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 2
-              ExplicitWidth = 652
               object SBNextFile: TSpeedButton
                 AlignWithMargins = True
-                Left = 603
+                Left = 629
                 Top = 3
                 Width = 28
                 Height = 28
@@ -382,7 +372,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
               object LCurFile: TLabel
                 Left = 34
                 Top = 0
-                Width = 566
+                Width = 592
                 Height = 34
                 Align = alClient
                 Alignment = taCenter
@@ -410,12 +400,11 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 660
+        Width = 686
         Height = 432
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 678
       end
     end
   end
