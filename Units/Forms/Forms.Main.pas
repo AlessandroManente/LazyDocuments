@@ -404,7 +404,7 @@ begin
   if not IUser.GetUtenteCorrente(UserID) then
     ShowMessage('Impossibile ottenere utente corrente')
   else if not IFiles.SearchFiles(MTSearchFiles, UserID) then
-    ShowMessage('Impossime aggiungere nuovi files')
+    ShowMessage('Impossime cercare files')
   else
     begin
       //

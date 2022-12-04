@@ -74,7 +74,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
     Top = 3
     Width = 706
     Height = 454
-    ActivePage = TSAggiungi
+    ActivePage = TSCerca
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
@@ -118,6 +118,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
               Action = ActionSearchFiles
               Align = alRight
               TabOrder = 0
+              ExplicitTop = 6
             end
           end
         end
