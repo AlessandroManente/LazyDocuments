@@ -41,16 +41,23 @@ type
   IQueryFiles = interface
     ['{610C93BD-FD07-4466-8356-477D0C48DC62}']
     function AddFiles(Files: TClientDataset; UserID: Integer): Boolean;
-    function GetSezioni(var List: TStrings): Boolean;
-    function GetSottosezioniBySezione(Sezione: String; var List: TStrings): Boolean;
-    function GetSottosezioni(var List: TStrings): Boolean;
-    function GetTag(var List: TStrings): Boolean;
     function AddSezione(Sezione: String): Boolean;
     function AddSottosezione(Sezione, SottoSezione: String): Boolean;
     function AddTag(Tag: String): Boolean;
+    function AddTagFile(TagID, FileID: Integer): Boolean;
     function EsisteSezione(Sezione: String): Boolean;
     function EsisteSottosezione(SottoSezione: String): Boolean;
     function EsisteTag(Tag: String): Boolean;
+    function GetIDLastFileByUserID(UserID: Integer; var ID: Integer): Boolean;
+    function GetIDSezione(Sezione: String; var ID: Integer): Boolean;
+    function GetIDSottoSezione(SottoSezione: String; var ID: Integer): Boolean;
+    function GetIDTag(Tag: String; var ID: Integer): Boolean;
+    function GetSezioni(var List: TStrings): Boolean;
+    function GetSottosezioni(var List: TStrings): Boolean;
+    function GetSottosezioniBySezione(Sezione: String;
+      var List: TStrings): Boolean;
+    function GetTag(var List: TStrings): Boolean;
+    function SearchFiles(Files: TFDMemTable; UserID: Integer): Boolean;
   end;
 
 function GetIQueryFiles: IQueryFiles;
@@ -68,14 +75,6 @@ type
     constructor Create; overload;
     destructor Destroy; override;
     function AddFiles(Files: TClientDataset; UserID: Integer): Boolean;
-    function GetIDLastFileByUserID(UserID: Integer; var ID: Integer): Boolean;
-    function GetSezioni(var List: TStrings): Boolean;
-    function GetIDSezione(Sezione: String; var ID: Integer): Boolean;
-    function GetIDSottoSezione(SottoSezione: String; var ID: Integer): Boolean;
-    function GetIDTag(Tag: String; var ID: Integer): Boolean;
-    function GetSottosezioni(var List: TStrings): Boolean;
-    function GetSottosezioniBySezione(Sezione: String; var List: TStrings): Boolean;
-    function GetTag(var List: TStrings): Boolean;
     function AddSezione(Sezione: String): Boolean;
     function AddSottosezione(Sezione, SottoSezione: String): Boolean;
     function AddTag(Tag: String): Boolean;
@@ -83,6 +82,16 @@ type
     function EsisteSezione(Sezione: String): Boolean;
     function EsisteSottosezione(SottoSezione: String): Boolean;
     function EsisteTag(Tag: String): Boolean;
+    function GetIDLastFileByUserID(UserID: Integer; var ID: Integer): Boolean;
+    function GetIDSezione(Sezione: String; var ID: Integer): Boolean;
+    function GetIDSottoSezione(SottoSezione: String; var ID: Integer): Boolean;
+    function GetIDTag(Tag: String; var ID: Integer): Boolean;
+    function GetSezioni(var List: TStrings): Boolean;
+    function GetSottosezioni(var List: TStrings): Boolean;
+    function GetSottosezioniBySezione(Sezione: String;
+      var List: TStrings): Boolean;
+    function GetTag(var List: TStrings): Boolean;
+    function SearchFiles(Files: TFDMemTable; UserID: Integer): Boolean;
   end;
 
 function GetIQueryFiles: IQueryFiles;
@@ -119,17 +128,19 @@ begin
             FileName := ExtractFileName(FullPath);
             SubSectionID := 0;
             if Files.FieldByName('SUBSECTION').AsString <> '' then
-              GetIDSottoSezione(Files.FieldByName('SUBSECTION').AsString, SubSectionID);
+              GetIDSottoSezione(Files.FieldByName('SUBSECTION').AsString,
+                SubSectionID);
 
             if Query.ExecSQL
-              ('INSERT INTO FILE (FULL_PATH, FILE_PATH, FILE_NAME, USER_ID, SUBSECTION_ID) ' +
-              'VALUES (:FULL_PATH, :FILE_PATH, :FILE_NAME, :USER_ID, :SUBSECTION_ID)',
+              ('INSERT INTO FILE (FULL_PATH, FILE_PATH, FILE_NAME, USER_ID, SUBSECTION_ID) '
+              + 'VALUES (:FULL_PATH, :FILE_PATH, :FILE_NAME, :USER_ID, :SUBSECTION_ID)',
               [FullPath, FilePath, FileName, UserID, SubSectionID]) <= 0 then
               Inc(Errori)
             else if GetIDLastFileByUserID(UserID, FileID) then
               begin
                 List.Clear;
-                TLazyFormat.DaStringaALista(Files.FieldByName('TAGS').AsString, ';', List);
+                TLazyFormat.DaStringaALista(Files.FieldByName('TAGS').AsString,
+                  ';', List);
                 for I := 0 to List.Count - 1 do
                   if GetIDTag(List[I], TagID) then
                     AddTagFile(TagID, FileID);
@@ -154,23 +165,6 @@ begin
   end;
 end;
 
-function TQueryFiles.AddSezione(Sezione: String): Boolean;
-const
-  MName = 'AddSezione';
-begin
-  Result := False;
-  try
-    if Query.ExecSQL('INSERT INTO SECTION (NAME) VALUES (:NAME)', [Sezione]) > 0 then
-      Result := True;
-  except
-    on E: Exception do
-      begin
-        Result := False;
-        Logger.AddLog(Self.ClassName, MName, E.Message);
-      end;
-  end;
-end;
-
 function TQueryFiles.AddSottosezione(Sezione, SottoSezione: String): Boolean;
 const
   MName = 'AddSottosezione';
@@ -180,7 +174,8 @@ begin
   Result := False;
   try
     if GetIDSezione(Sezione, ID) and (ID > 0) and
-      (Query.ExecSQL('INSERT INTO SUBSECTION (NAME, SECTION_ID) VALUES (:NAME, :SECTION_ID)',
+      (Query.ExecSQL
+      ('INSERT INTO SUBSECTION (NAME, SECTION_ID) VALUES (:NAME, :SECTION_ID)',
       [SottoSezione, ID]) > 0) then
       Result := True;
   except
@@ -215,7 +210,8 @@ const
 begin
   Result := False;
   try
-    if Query.ExecSQL('INSERT INTO TAG_FILE (ID_TAG, ID_FILE) VALUES (:ID_TAG, :ID_FILE)',
+    if Query.ExecSQL
+      ('INSERT INTO TAG_FILE (ID_TAG, ID_FILE) VALUES (:ID_TAG, :ID_FILE)',
       [TagID, FileID]) > 0 then
       Result := True;
   except
@@ -240,13 +236,32 @@ begin
   inherited;
 end;
 
+function TQueryFiles.AddSezione(Sezione: String): Boolean;
+const
+  MName = 'AddSezione';
+begin
+  Result := False;
+  try
+    if Query.ExecSQL('INSERT INTO SECTION (NAME) VALUES (:NAME)', [Sezione]) > 0
+    then
+      Result := True;
+  except
+    on E: Exception do
+      begin
+        Result := False;
+        Logger.AddLog(Self.ClassName, MName, E.Message);
+      end;
+  end;
+end;
+
 function TQueryFiles.EsisteSezione(Sezione: String): Boolean;
 const
   MName = 'EsisteSezione';
 begin
   Result := False;
   try
-    Query.Open('SELECT COUNT(*) AS C FROM SECTION WHERE NAME = :NAME', [Sezione]);
+    Query.Open('SELECT COUNT(*) AS C FROM SECTION WHERE NAME = :NAME',
+      [Sezione]);
     if (Query.RowsAffected > 0) and (Query.FieldByName('C').AsInteger > 0) then
       Result := True;
   except
@@ -264,7 +279,8 @@ const
 begin
   Result := False;
   try
-    Query.Open('SELECT COUNT(*) AS C FROM SUBSECTION WHERE NAME = :NAME', [SottoSezione]);
+    Query.Open('SELECT COUNT(*) AS C FROM SUBSECTION WHERE NAME = :NAME',
+      [SottoSezione]);
     if (Query.RowsAffected > 0) and (Query.FieldByName('C').AsInteger > 0) then
       Result := True;
   except
@@ -294,68 +310,16 @@ begin
   end;
 end;
 
-function TQueryFiles.GetSottosezioni(var List: TStrings): Boolean;
-const
-  MName = 'GetSottosezioni';
-begin
-  Result := False;
-  try
-    Query.Open('SELECT NAME FROM SUBSECTION', []);
-    if Query.RowsAffected > 0 then
-      begin
-        while not Query.Eof do
-          begin
-            List.Add(Query.FieldByName('NAME').AsString);
-            Query.Next;
-          end;
-        Result := True;
-      end;
-  except
-    on E: Exception do
-      begin
-        Result := False;
-        Logger.AddLog(Self.ClassName, MName, E.Message);
-      end;
-  end;
-end;
-
-function TQueryFiles.GetSottosezioniBySezione(Sezione: String; var List: TStrings): Boolean;
-const
-  MName = 'GetSottosezioniBySezione';
-var
-  ID: Integer;
-begin
-  Result := False;
-  try
-    if GetIDSezione(Sezione, ID) then
-      begin
-        Query.Open('SELECT NAME FROM SECTION WHERE SECTION_ID = :SECTION_ID', [ID]);
-        if Query.RowsAffected > 0 then
-          begin
-            while not Query.Eof do
-              begin
-                List.Add(Query.FieldByName('NAME').AsString);
-                Query.Next;
-              end;
-            Result := True;
-          end;
-      end;
-  except
-    on E: Exception do
-      begin
-        Result := False;
-        Logger.AddLog(Self.ClassName, MName, E.Message);
-      end;
-  end;
-end;
-
-function TQueryFiles.GetIDLastFileByUserID(UserID: Integer; var ID: Integer): Boolean;
+function TQueryFiles.GetIDLastFileByUserID(UserID: Integer;
+  var ID: Integer): Boolean;
 const
   MName = 'GetIDLastFileByUserID';
 begin
   Result := False;
   try
-    Query.Open('SELECT ID FROM FILE WHERE USER_ID = :USER_ID ORDER BY ID DESC LIMIT 1', [UserID]);
+    Query.Open
+      ('SELECT ID FROM FILE WHERE USER_ID = :USER_ID ORDER BY ID DESC LIMIT 1',
+      [UserID]);
     if Query.RowsAffected > 0 then
       begin
         ID := Query.FieldByName('ID').AsInteger;
@@ -391,7 +355,8 @@ begin
   end;
 end;
 
-function TQueryFiles.GetIDSottoSezione(SottoSezione: String; var ID: Integer): Boolean;
+function TQueryFiles.GetIDSottoSezione(SottoSezione: String;
+  var ID: Integer): Boolean;
 const
   MName = 'GetIDSottoSezione';
 begin
@@ -458,6 +423,63 @@ begin
   end;
 end;
 
+function TQueryFiles.GetSottosezioni(var List: TStrings): Boolean;
+const
+  MName = 'GetSottosezioni';
+begin
+  Result := False;
+  try
+    Query.Open('SELECT NAME FROM SUBSECTION', []);
+    if Query.RowsAffected > 0 then
+      begin
+        while not Query.Eof do
+          begin
+            List.Add(Query.FieldByName('NAME').AsString);
+            Query.Next;
+          end;
+        Result := True;
+      end;
+  except
+    on E: Exception do
+      begin
+        Result := False;
+        Logger.AddLog(Self.ClassName, MName, E.Message);
+      end;
+  end;
+end;
+
+function TQueryFiles.GetSottosezioniBySezione(Sezione: String;
+  var List: TStrings): Boolean;
+const
+  MName = 'GetSottosezioniBySezione';
+var
+  ID: Integer;
+begin
+  Result := False;
+  try
+    if GetIDSezione(Sezione, ID) then
+      begin
+        Query.Open
+          ('SELECT NAME FROM SECTION WHERE SECTION_ID = :SECTION_ID', [ID]);
+        if Query.RowsAffected > 0 then
+          begin
+            while not Query.Eof do
+              begin
+                List.Add(Query.FieldByName('NAME').AsString);
+                Query.Next;
+              end;
+            Result := True;
+          end;
+      end;
+  except
+    on E: Exception do
+      begin
+        Result := False;
+        Logger.AddLog(Self.ClassName, MName, E.Message);
+      end;
+  end;
+end;
+
 function TQueryFiles.GetTag(var List: TStrings): Boolean;
 const
   MName = 'GetTag';
@@ -480,6 +502,35 @@ begin
         Result := False;
         Logger.AddLog(Self.ClassName, MName, E.Message);
       end;
+  end;
+end;
+
+function TQueryFiles.SearchFiles(Files: TFDMemTable; UserID: Integer): Boolean;
+const
+  MName = 'GetTag';
+begin
+  Result := False;
+  Files.EmptyDataSet;
+  Files.DisableControls;
+  try
+    try
+      Query.Open('SELECT ID, FILE_NAME FROM FILE WHERE USER_ID = :USER_ID',
+        [UserID]);
+      if Query.RowsAffected > 0 then
+        begin
+          Files.CopyDataSet(Query, [coRestart, coAppend]);
+          Result := True;
+        end;
+    except
+      on E: Exception do
+        begin
+          Result := False;
+          Logger.AddLog(Self.ClassName, MName, E.Message);
+        end;
+    end;
+  finally
+    Files.First;
+    Files.EnableControls;
   end;
 end;
 

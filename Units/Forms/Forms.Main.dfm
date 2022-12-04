@@ -91,6 +91,61 @@ object LazyDocumentsForm: TLazyDocumentsForm
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        object Panel1: TPanel
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 680
+          Height = 118
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Panel2: TPanel
+            AlignWithMargins = True
+            Left = 3
+            Top = 80
+            Width = 674
+            Height = 35
+            Align = alBottom
+            BevelOuter = bvNone
+            TabOrder = 0
+            object BSearchFiles: TButton
+              AlignWithMargins = True
+              Left = 596
+              Top = 3
+              Width = 75
+              Height = 29
+              Action = ActionSearchFiles
+              Align = alRight
+              TabOrder = 0
+            end
+          end
+        end
+        object GSearchFiles: TDBGrid
+          Left = 0
+          Top = 124
+          Width = 686
+          Height = 308
+          Align = alClient
+          DataSource = DSSearchFiles
+          TabOrder = 1
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -11
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'FILE_ID'
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'FILE_NAME'
+              Visible = True
+            end>
+        end
       end
     end
     object TSAggiungi: TTabSheet
@@ -453,11 +508,38 @@ object LazyDocumentsForm: TLazyDocumentsForm
       Caption = 'Aggiungi'
       OnExecute = ActionAddSottosezioneExecute
     end
+    object ActionSearchFiles: TAction
+      Caption = 'Ricerca'
+      OnExecute = ActionSearchFilesExecute
+    end
   end
   object DSAddFiles: TDataSource
     DataSet = CDAddFiles
     Left = 40
     Top = 168
+  end
+  object MTSearchFiles: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 40
+    Top = 312
+    object MTSearchFilesFILE_ID: TIntegerField
+      FieldName = 'FILE_ID'
+    end
+    object MTSearchFilesFILE_NAME: TStringField
+      FieldName = 'FILE_NAME'
+      Size = 100
+    end
+  end
+  object DSSearchFiles: TDataSource
+    DataSet = MTSearchFiles
+    Left = 40
+    Top = 360
   end
   object CDAddFiles: TClientDataSet
     Aggregates = <>
@@ -485,6 +567,6 @@ object LazyDocumentsForm: TLazyDocumentsForm
     Params = <>
     StoreDefs = True
     Left = 40
-    Top = 128
+    Top = 120
   end
 end

@@ -119,6 +119,15 @@ type
     ActionAddSottosezione: TAction;
     CBSezioneAddFiles: TComboBox;
     CBSottosezioneAddFiles: TComboBox;
+    Panel1: TPanel;
+    GSearchFiles: TDBGrid;
+    MTSearchFiles: TFDMemTable;
+    Panel2: TPanel;
+    BSearchFiles: TButton;
+    DSSearchFiles: TDataSource;
+    MTSearchFilesFILE_NAME: TStringField;
+    MTSearchFilesFILE_ID: TIntegerField;
+    ActionSearchFiles: TAction;
     CDAddFiles: TClientDataSet;
     procedure ActionAddSezioneExecute(Sender: TObject);
     procedure ActionAddSottosezioneExecute(Sender: TObject);
@@ -133,6 +142,7 @@ type
     procedure ActionPCImpostazioniExecute(Sender: TObject);
     procedure ActionPrevFileExecute(Sender: TObject);
     procedure ActionSaveFilesExecute(Sender: TObject);
+    procedure ActionSearchFilesExecute(Sender: TObject);
     procedure CBSezioneAddFilesChange(Sender: TObject);
     procedure CBSottosezioneAddFilesChange(Sender: TObject);
     procedure CLBTagAddFilesClickCheck(Sender: TObject);
@@ -170,7 +180,8 @@ type
     property IUser: IQueryUser read FIUser write SetIUser;
     property IFiles: IQueryFiles read FIFiles write SetIFiles;
     property UserID: Integer read FUserID write SetUserID;
-    property CurrentAddedFile: Integer read FCurrentAddedFile write SetCurrentAddedFile;
+    property CurrentAddedFile: Integer read FCurrentAddedFile
+      write SetCurrentAddedFile;
   public
     procedure SetupDaUtente(Utente: Integer);
   end;
@@ -208,7 +219,8 @@ begin
     ShowMessage('Inserire il nome di una sottosezione da aggiungere')
   else if IFiles.EsisteSottosezione(ENewSottoSezione.Text) then
     ShowMessage('Sottosezione con questo nome già esistente')
-  else if not IFiles.AddSottosezione(CBSezioneAddFiles.Text, ENewSottoSezione.Text) then
+  else if not IFiles.AddSottosezione(CBSezioneAddFiles.Text,
+    ENewSottoSezione.Text) then
     ShowMessage('Impossibile creare nuova sottosezione')
   else
     LoadCBSottosezioni;
@@ -273,6 +285,9 @@ begin
 
   FIUser := GetIQueryUser;
   FIFiles := GetIQueryFiles;
+
+  MTSearchFiles.CreateDataSet;
+  MTSearchFiles.Open;
 
   CurrentAddedFile := 1;
 end;
@@ -382,7 +397,22 @@ begin
     end;
 end;
 
-procedure TLazyDocumentsForm.AggiungiDroppedFiles(NumFiles: Integer; var Msg: TWMDropFiles);
+procedure TLazyDocumentsForm.ActionSearchFilesExecute(Sender: TObject);
+var
+  UserID: Integer;
+begin
+  if not IUser.GetUtenteCorrente(UserID) then
+    ShowMessage('Impossibile ottenere utente corrente')
+  else if not IFiles.SearchFiles(MTSearchFiles, UserID) then
+    ShowMessage('Impossime aggiungere nuovi files')
+  else
+    begin
+      //
+    end;
+end;
+
+procedure TLazyDocumentsForm.AggiungiDroppedFiles(NumFiles: Integer;
+  var Msg: TWMDropFiles);
 var
   buf: array [0 .. MAX_PATH] of char;
   List: TStrings;
@@ -479,11 +509,13 @@ procedure TLazyDocumentsForm.LoadCBSezioni;
 var
   List: TStrings;
 begin
+  CBSezioneAddFiles.Text := '';
   List := TStringList.Create;
   try
     if IFiles.GetSezioni(List) then
       CBSezioneAddFiles.Items.Assign(List);
-    CBSezioneAddFiles.ItemIndex := List.IndexOf(CDAddFiles.FieldByName('SECTION').AsString);
+    CBSezioneAddFiles.ItemIndex :=
+      List.IndexOf(CDAddFiles.FieldByName('SECTION').AsString);
   finally
     List.Free;
   end;
@@ -494,6 +526,7 @@ var
   List: TStrings;
   Sezione: String;
 begin
+  CBSottosezioneAddFiles.Text := '';
   Sezione := CBSezioneAddFiles.Text;
   if Sezione <> '' then
     begin
@@ -519,8 +552,8 @@ begin
     if IFiles.GetTag(List) then
       CLBTagAddFiles.Items.Assign(List);
     for I := 0 to CLBTagAddFiles.Count - 1 do
-      CLBTagAddFiles.Checked[I] := ContainsText(CDAddFiles.FieldByName('TAGS').AsString,
-        CLBTagAddFiles.Items[I]);
+      CLBTagAddFiles.Checked[I] := ContainsText(CDAddFiles.FieldByName('TAGS')
+        .AsString, CLBTagAddFiles.Items[I]);
   finally
     List.Free;
   end;
@@ -576,7 +609,8 @@ begin
   UpdateTSAddFiles;
 end;
 
-procedure TLazyDocumentsForm.UpdateCurrentAddedFile(Op: String; TotFiles: Integer);
+procedure TLazyDocumentsForm.UpdateCurrentAddedFile(Op: String;
+  TotFiles: Integer);
 begin
   if (Op = 'NEXT') and (CurrentAddedFile < TotFiles) then
     Inc(FCurrentAddedFile)
@@ -586,7 +620,8 @@ end;
 
 procedure TLazyDocumentsForm.UpdateTSAddFiles;
 begin
-  LCurFile.Caption := IntToStr(CurrentAddedFile) + '/' + IntToStr(CDAddFiles.RecordCount);
+  LCurFile.Caption := IntToStr(CurrentAddedFile) + '/' +
+    IntToStr(CDAddFiles.RecordCount);
   LoadCBSezioni;
   LoadCBSottosezioni;
   LoadCLBTag;
