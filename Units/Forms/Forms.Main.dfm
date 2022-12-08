@@ -2,8 +2,8 @@ object LazyDocumentsForm: TLazyDocumentsForm
   Left = 0
   Top = 0
   Caption = 'LazyDocuments'
-  ClientHeight = 460
-  ClientWidth = 768
+  ClientHeight = 644
+  ClientWidth = 895
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,7 +22,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
     Left = 3
     Top = 3
     Width = 50
-    Height = 454
+    Height = 638
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -33,10 +33,11 @@ object LazyDocumentsForm: TLazyDocumentsForm
     Placement = svpLeft
     TabOrder = 0
     UseAnimation = False
+    ExplicitHeight = 454
     object BtnImpostazioni: TSpeedButton
       AlignWithMargins = True
       Left = 3
-      Top = 425
+      Top = 609
       Width = 44
       Height = 26
       Action = ActionPCImpostazioni
@@ -72,12 +73,14 @@ object LazyDocumentsForm: TLazyDocumentsForm
     AlignWithMargins = True
     Left = 59
     Top = 3
-    Width = 706
-    Height = 454
-    ActivePage = TSCerca
+    Width = 833
+    Height = 638
+    ActivePage = TSAggiungi
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 706
+    ExplicitHeight = 454
     object TSCerca: TTabSheet
       AlignWithMargins = True
       Caption = 'TSCerca'
@@ -86,47 +89,81 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 686
-        Height = 432
+        Width = 813
+        Height = 616
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 686
+        ExplicitHeight = 432
         object Panel1: TPanel
           AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 680
+          Width = 807
           Height = 118
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 680
           object Panel2: TPanel
             AlignWithMargins = True
             Left = 3
             Top = 80
-            Width = 674
+            Width = 801
             Height = 35
             Align = alBottom
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitLeft = 0
+            ExplicitWidth = 674
             object BSearchFiles: TButton
               AlignWithMargins = True
-              Left = 596
+              Left = 3
               Top = 3
               Width = 75
               Height = 29
               Action = ActionSearchFiles
-              Align = alRight
+              Align = alLeft
               TabOrder = 0
-              ExplicitTop = 6
+              ExplicitLeft = 596
             end
+            object BPulisciCerca: TButton
+              AlignWithMargins = True
+              Left = 723
+              Top = 3
+              Width = 75
+              Height = 29
+              Align = alRight
+              Caption = 'Pulisci'
+              TabOrder = 1
+              ExplicitLeft = 304
+              ExplicitTop = 8
+              ExplicitHeight = 25
+            end
+          end
+          object Panel3: TPanel
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 801
+            Height = 71
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitLeft = 248
+            ExplicitTop = 40
+            ExplicitWidth = 185
+            ExplicitHeight = 41
           end
         end
         object GSearchFiles: TDBGrid
           Left = 0
           Top = 124
-          Width = 686
-          Height = 308
+          Width = 813
+          Height = 492
           Align = alClient
           DataSource = DSSearchFiles
           TabOrder = 1
@@ -158,13 +195,15 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 686
-        Height = 432
+        Width = 813
+        Height = 616
         ActivePage = TSAddFiles
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 0
         StyleElements = [seFont, seClient]
+        ExplicitWidth = 686
+        ExplicitHeight = 432
         object TSDropFiles: TTabSheet
           AlignWithMargins = True
           Caption = 'TSDropFiles'
@@ -173,16 +212,18 @@ object LazyDocumentsForm: TLazyDocumentsForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 666
-            Height = 410
+            Width = 793
+            Height = 594
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitWidth = 666
+            ExplicitHeight = 410
             object LDragFile: TLabel
               Left = 0
               Top = 0
-              Width = 666
-              Height = 410
+              Width = 793
+              Height = 594
               Align = alClient
               Alignment = taCenter
               Caption = 'Trascina file qui'#13#10'o...'#13#10#13#10
@@ -221,163 +262,441 @@ object LazyDocumentsForm: TLazyDocumentsForm
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 666
-            Height = 410
+            Width = 793
+            Height = 594
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitWidth = 666
+            ExplicitHeight = 410
             object PAddFilesMiddle: TPanel
               AlignWithMargins = True
               Left = 3
               Top = 43
-              Width = 660
-              Height = 324
+              Width = 787
+              Height = 508
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              object LPathAddFiles: TLabel
+              ExplicitWidth = 660
+              ExplicitHeight = 324
+              object Panel4: TPanel
                 AlignWithMargins = True
                 Left = 3
                 Top = 3
-                Width = 654
-                Height = 13
-                Align = alTop
-                Caption = 'Nome File:'
-                ExplicitWidth = 54
-              end
-              object LSezioneAddFiles: TLabel
-                Left = 3
-                Top = 49
-                Width = 43
-                Height = 13
-                Caption = 'Sezione:'
-              end
-              object LSottosezioneAddFiles: TLabel
-                Left = 3
-                Top = 123
-                Width = 70
-                Height = 13
-                Caption = 'Sottosezione:'
-              end
-              object LTagAddFiles: TLabel
-                Left = 3
-                Top = 197
-                Width = 21
-                Height = 13
-                Caption = 'Tag:'
-              end
-              object LAddTagAddFiles: TLabel
-                Left = 331
-                Top = 197
-                Width = 58
-                Height = 13
-                Caption = 'Nuovo Tag:'
-              end
-              object SBAddTagAddFiles: TSpeedButton
-                Left = 561
-                Top = 243
-                Width = 70
-                Height = 28
-                Action = ActionAddTag
-              end
-              object LAddSezioneAddFiles: TLabel
-                Left = 335
-                Top = 49
-                Width = 94
-                Height = 13
-                Caption = 'Aggiungi Sezione:'
-              end
-              object SBAddSezioneAddFiles: TSpeedButton
-                Left = 561
-                Top = 90
-                Width = 70
-                Height = 28
-                Action = ActionAddSezione
-              end
-              object LAddSottosezioneAddFiles: TLabel
-                Left = 335
-                Top = 123
-                Width = 121
-                Height = 13
-                Caption = 'Aggiungi Sottosezione:'
-              end
-              object SBAddSottosezioneAddFiles: TSpeedButton
-                Left = 561
-                Top = 164
-                Width = 70
-                Height = 28
-                Action = ActionAddSottosezione
-              end
-              object DBEPathAddFiles: TDBEdit
-                AlignWithMargins = True
-                Left = 3
-                Top = 22
-                Width = 654
-                Height = 21
-                Align = alTop
-                DataField = 'FULL_PATH'
-                DataSource = DSAddFiles
+                Width = 781
+                Height = 502
+                Align = alClient
+                BevelOuter = bvNone
                 TabOrder = 0
-              end
-              object CLBTagAddFiles: TCheckListBox
-                Left = 3
-                Top = 216
-                Width = 300
-                Height = 108
-                OnClickCheck = CLBTagAddFilesClickCheck
-                ItemHeight = 13
-                TabOrder = 1
-              end
-              object ENewTag: TEdit
-                Left = 331
-                Top = 216
-                Width = 300
-                Height = 21
-                TabOrder = 2
-              end
-              object ENewSezione: TEdit
-                Left = 331
-                Top = 68
-                Width = 300
-                Height = 21
-                TabOrder = 3
-              end
-              object ENewSottoSezione: TEdit
-                Left = 331
-                Top = 142
-                Width = 300
-                Height = 21
-                TabOrder = 4
-              end
-              object CBSezioneAddFiles: TComboBox
-                Left = 3
-                Top = 68
-                Width = 300
-                Height = 21
-                TabOrder = 5
-                OnChange = CBSezioneAddFilesChange
-              end
-              object CBSottosezioneAddFiles: TComboBox
-                Left = 3
-                Top = 142
-                Width = 300
-                Height = 21
-                TabOrder = 6
-                OnChange = CBSottosezioneAddFilesChange
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 787
+                ExplicitHeight = 465
+                object Panel5: TPanel
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 3
+                  Width = 775
+                  Height = 48
+                  Align = alTop
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  ExplicitLeft = 1
+                  ExplicitTop = 1
+                  ExplicitWidth = 785
+                  object LPathAddFiles: TLabel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 3
+                    Width = 769
+                    Height = 13
+                    Align = alTop
+                    Caption = 'Nome File:'
+                    ExplicitWidth = 54
+                  end
+                  object DBEPathAddFiles: TDBEdit
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 22
+                    Width = 769
+                    Height = 21
+                    Align = alTop
+                    DataField = 'FULL_PATH'
+                    DataSource = DSAddFiles
+                    TabOrder = 0
+                    ExplicitWidth = 781
+                  end
+                end
+                object Panel6: TPanel
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 57
+                  Width = 775
+                  Height = 112
+                  Align = alTop
+                  BevelOuter = bvNone
+                  TabOrder = 1
+                  object Panel7: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 33
+                    Width = 769
+                    Height = 32
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    ExplicitLeft = 1
+                    ExplicitTop = 25
+                    ExplicitWidth = 783
+                    object CBSezioneAddFiles: TComboBox
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 300
+                      Height = 21
+                      Align = alLeft
+                      TabOrder = 0
+                      OnChange = CBSezioneAddFilesChange
+                      ExplicitTop = 27
+                    end
+                    object ENewSezione: TEdit
+                      AlignWithMargins = True
+                      Left = 466
+                      Top = 3
+                      Width = 300
+                      Height = 26
+                      Align = alRight
+                      TabOrder = 1
+                      ExplicitLeft = 331
+                      ExplicitTop = 27
+                      ExplicitHeight = 21
+                    end
+                  end
+                  object Panel8: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 3
+                    Width = 769
+                    Height = 24
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 1
+                    ExplicitLeft = 1
+                    ExplicitTop = 1
+                    ExplicitWidth = 783
+                    object LSezioneAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 43
+                      Height = 18
+                      Align = alLeft
+                      Caption = 'Sezione:'
+                      ExplicitTop = 35
+                      ExplicitHeight = 13
+                    end
+                    object LAddSezioneAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 672
+                      Top = 3
+                      Width = 94
+                      Height = 18
+                      Align = alRight
+                      Caption = 'Aggiungi Sezione:'
+                      ExplicitLeft = 335
+                      ExplicitTop = 11
+                      ExplicitHeight = 13
+                    end
+                  end
+                  object Panel9: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 71
+                    Width = 769
+                    Height = 38
+                    Align = alClient
+                    BevelOuter = bvNone
+                    TabOrder = 2
+                    ExplicitHeight = 22
+                    object SBAddSezioneAddFiles: TSpeedButton
+                      AlignWithMargins = True
+                      Left = 696
+                      Top = 3
+                      Width = 70
+                      Height = 32
+                      Action = ActionAddSezione
+                      Align = alRight
+                      ExplicitLeft = 561
+                      ExplicitTop = 56
+                      ExplicitHeight = 28
+                    end
+                  end
+                end
+                object Panel10: TPanel
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 175
+                  Width = 775
+                  Height = 110
+                  Align = alTop
+                  BevelOuter = bvNone
+                  TabOrder = 2
+                  object Panel11: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 3
+                    Width = 769
+                    Height = 27
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    ExplicitLeft = 1
+                    ExplicitTop = 5
+                    ExplicitWidth = 783
+                    object LAddSottosezioneAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 645
+                      Top = 3
+                      Width = 121
+                      Height = 21
+                      Align = alRight
+                      Caption = 'Aggiungi Sottosezione:'
+                      ExplicitLeft = 335
+                      ExplicitTop = 32
+                      ExplicitHeight = 13
+                    end
+                    object LSottosezioneAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 70
+                      Height = 21
+                      Align = alLeft
+                      Caption = 'Sottosezione:'
+                      ExplicitTop = 32
+                      ExplicitHeight = 13
+                    end
+                  end
+                  object Panel12: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 36
+                    Width = 769
+                    Height = 31
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 1
+                    ExplicitLeft = 1
+                    ExplicitTop = 28
+                    ExplicitWidth = 783
+                    object CBSottosezioneAddFiles: TComboBox
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 300
+                      Height = 21
+                      Align = alLeft
+                      TabOrder = 0
+                      OnChange = CBSottosezioneAddFilesChange
+                      ExplicitTop = 24
+                    end
+                    object ENewSottoSezione: TEdit
+                      AlignWithMargins = True
+                      Left = 466
+                      Top = 3
+                      Width = 300
+                      Height = 25
+                      Align = alRight
+                      TabOrder = 1
+                      ExplicitLeft = 331
+                      ExplicitTop = 24
+                      ExplicitHeight = 21
+                    end
+                  end
+                  object Panel13: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 73
+                    Width = 769
+                    Height = 34
+                    Align = alClient
+                    BevelOuter = bvNone
+                    TabOrder = 2
+                    ExplicitLeft = 2
+                    ExplicitTop = 65
+                    ExplicitWidth = 783
+                    ExplicitHeight = 44
+                    object SBAddSottosezioneAddFiles: TSpeedButton
+                      AlignWithMargins = True
+                      Left = 696
+                      Top = 3
+                      Width = 70
+                      Height = 28
+                      Action = ActionAddSottosezione
+                      Align = alRight
+                      ExplicitLeft = 561
+                      ExplicitTop = 120
+                    end
+                  end
+                end
+                object Panel14: TPanel
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 291
+                  Width = 775
+                  Height = 208
+                  Align = alClient
+                  BevelOuter = bvNone
+                  TabOrder = 3
+                  ExplicitLeft = 296
+                  ExplicitTop = 330
+                  ExplicitWidth = 185
+                  ExplicitHeight = 41
+                  object Panel15: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 3
+                    Width = 769
+                    Height = 24
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    ExplicitLeft = 1
+                    ExplicitTop = 1
+                    ExplicitWidth = 783
+                    object LAddTagAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 708
+                      Top = 3
+                      Width = 58
+                      Height = 18
+                      Align = alRight
+                      Caption = 'Nuovo Tag:'
+                      ExplicitLeft = 331
+                      ExplicitTop = 28
+                      ExplicitHeight = 13
+                    end
+                    object LTagAddFiles: TLabel
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 21
+                      Height = 18
+                      Align = alLeft
+                      Caption = 'Tag:'
+                      ExplicitTop = 28
+                      ExplicitHeight = 13
+                    end
+                  end
+                  object Panel16: TPanel
+                    AlignWithMargins = True
+                    Left = 460
+                    Top = 33
+                    Width = 312
+                    Height = 172
+                    Align = alRight
+                    BevelOuter = bvNone
+                    TabOrder = 1
+                    ExplicitLeft = 472
+                    ExplicitTop = 25
+                    ExplicitHeight = 189
+                    object Panel17: TPanel
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 306
+                      Height = 32
+                      Align = alTop
+                      BevelOuter = bvNone
+                      TabOrder = 0
+                      ExplicitLeft = 1
+                      ExplicitTop = 1
+                      ExplicitWidth = 310
+                      object ENewTag: TEdit
+                        AlignWithMargins = True
+                        Left = 3
+                        Top = 3
+                        Width = 300
+                        Height = 26
+                        Align = alRight
+                        TabOrder = 0
+                        ExplicitLeft = 50
+                        ExplicitTop = 20
+                        ExplicitHeight = 21
+                      end
+                    end
+                    object Panel18: TPanel
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 41
+                      Width = 306
+                      Height = 41
+                      Align = alTop
+                      BevelOuter = bvNone
+                      TabOrder = 1
+                      ExplicitLeft = 64
+                      ExplicitTop = 72
+                      ExplicitWidth = 185
+                      object SBAddTagAddFiles: TSpeedButton
+                        AlignWithMargins = True
+                        Left = 233
+                        Top = 3
+                        Width = 70
+                        Height = 35
+                        Action = ActionAddTag
+                        Align = alRight
+                        ExplicitLeft = 240
+                        ExplicitTop = 13
+                        ExplicitHeight = 28
+                      end
+                    end
+                  end
+                  object Panel19: TPanel
+                    AlignWithMargins = True
+                    Left = 3
+                    Top = 33
+                    Width = 304
+                    Height = 172
+                    Align = alLeft
+                    BevelOuter = bvNone
+                    TabOrder = 2
+                    ExplicitLeft = 1
+                    ExplicitTop = 25
+                    ExplicitHeight = 189
+                    object CLBTagAddFiles: TCheckListBox
+                      AlignWithMargins = True
+                      Left = 3
+                      Top = 3
+                      Width = 298
+                      Height = 166
+                      OnClickCheck = CLBTagAddFilesClickCheck
+                      Align = alClient
+                      ItemHeight = 13
+                      TabOrder = 0
+                      ExplicitLeft = 41
+                      ExplicitTop = 59
+                      ExplicitWidth = 300
+                      ExplicitHeight = 108
+                    end
+                  end
+                end
               end
             end
             object PAddFilesBottom: TPanel
               AlignWithMargins = True
               Left = 3
-              Top = 373
-              Width = 660
+              Top = 557
+              Width = 787
               Height = 34
               Align = alBottom
               BevelOuter = bvNone
               TabOrder = 1
+              ExplicitTop = 373
+              ExplicitWidth = 660
               object SBSaveFiles: TSpeedButton
                 AlignWithMargins = True
-                Left = 587
+                Left = 714
                 Top = 3
                 Width = 70
                 Height = 28
@@ -401,14 +720,15 @@ object LazyDocumentsForm: TLazyDocumentsForm
               AlignWithMargins = True
               Left = 3
               Top = 3
-              Width = 660
+              Width = 787
               Height = 34
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 2
+              ExplicitWidth = 660
               object SBNextFile: TSpeedButton
                 AlignWithMargins = True
-                Left = 629
+                Left = 756
                 Top = 3
                 Width = 28
                 Height = 28
@@ -428,7 +748,7 @@ object LazyDocumentsForm: TLazyDocumentsForm
               object LCurFile: TLabel
                 Left = 34
                 Top = 0
-                Width = 592
+                Width = 719
                 Height = 34
                 Align = alClient
                 Alignment = taCenter
@@ -456,11 +776,13 @@ object LazyDocumentsForm: TLazyDocumentsForm
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 686
-        Height = 432
+        Width = 813
+        Height = 616
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 686
+        ExplicitHeight = 432
       end
     end
   end

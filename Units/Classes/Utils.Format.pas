@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils,
   System.Classes,
+  System.Hash,
   System.DateUtils;
 
 type
@@ -15,6 +16,8 @@ type
     class function FormatDateLog(Data: TDateTime): String; static;
     class procedure DaStringaALista(Stringa: String; Separatore: Char; var List:
         TStrings);
+    class function HashString(ToHash: String): String; static;
+    class function HashFile(ToHash: String): String; static;
   end;
 
 implementation
@@ -47,6 +50,16 @@ end;
 class function TLazyFormat.FormatDateTimeSQLite(Data: TDateTime): String;
 begin
   Result := FormatDateTime('YYYY-MM-DD HH:MM:SS.SSS', Data);
+end;
+
+class function TLazyFormat.HashString(ToHash: String): String;
+begin
+  Result := THashMD5.Create.GetHashString(ToHash);
+end;
+
+class function TLazyFormat.HashFile(ToHash: String): String;
+begin
+  Result := THashMD5.Create.GetHashStringFromFile(ToHash);
 end;
 
 end.

@@ -129,6 +129,24 @@ type
     MTSearchFilesFILE_ID: TIntegerField;
     ActionSearchFiles: TAction;
     CDAddFiles: TClientDataSet;
+    BPulisciCerca: TButton;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Panel10: TPanel;
+    Panel11: TPanel;
+    Panel12: TPanel;
+    Panel13: TPanel;
+    Panel14: TPanel;
+    Panel15: TPanel;
+    Panel16: TPanel;
+    Panel17: TPanel;
+    Panel18: TPanel;
+    Panel19: TPanel;
     procedure ActionAddSezioneExecute(Sender: TObject);
     procedure ActionAddSottosezioneExecute(Sender: TObject);
     procedure ActionAddTagExecute(Sender: TObject);
@@ -404,7 +422,7 @@ begin
   if not IUser.GetUtenteCorrente(UserID) then
     ShowMessage('Impossibile ottenere utente corrente')
   else if not IFiles.SearchFiles(MTSearchFiles, UserID) then
-    ShowMessage('Impossime cercare files')
+    ShowMessage('Impossibile cercare files')
   else
     begin
       //
