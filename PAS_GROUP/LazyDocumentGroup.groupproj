@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{531EAA0A-A21C-49C2-B1F9-26C7993EDA98}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\PAS_CLIENT\LazyDocuments.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\PAS_MONITOR\LazyDocumentsMonitor.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\PAS_WIRL\LazyDocumentsWiRL.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="LazyDocuments">
+        <MSBuild Projects="..\PAS_CLIENT\LazyDocuments.dproj"/>
+    </Target>
+    <Target Name="LazyDocuments:Clean">
+        <MSBuild Projects="..\PAS_CLIENT\LazyDocuments.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LazyDocuments:Make">
+        <MSBuild Projects="..\PAS_CLIENT\LazyDocuments.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LazyDocumentsMonitor">
+        <MSBuild Projects="..\PAS_MONITOR\LazyDocumentsMonitor.dproj"/>
+    </Target>
+    <Target Name="LazyDocumentsMonitor:Clean">
+        <MSBuild Projects="..\PAS_MONITOR\LazyDocumentsMonitor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LazyDocumentsMonitor:Make">
+        <MSBuild Projects="..\PAS_MONITOR\LazyDocumentsMonitor.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LazyDocumentsWiRL">
+        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj"/>
+    </Target>
+    <Target Name="LazyDocumentsWiRL:Clean">
+        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LazyDocumentsWiRL:Make">
+        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="LazyDocuments;LazyDocumentsMonitor;LazyDocumentsWiRL"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="LazyDocuments:Clean;LazyDocumentsMonitor:Clean;LazyDocumentsWiRL:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="LazyDocuments:Make;LazyDocumentsMonitor:Make;LazyDocumentsWiRL:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
