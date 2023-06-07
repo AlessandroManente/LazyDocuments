@@ -1,13 +1,10 @@
-unit WiRLServer.Entities;
+unit Backend.Entities;
 
 interface
-
 uses
   System.SysUtils, System.Classes, System.Contnrs, System.Generics.Collections,
   Neon.Core.Attributes;
-
 {$M+}
-
 type
   TAddress = class
   private
@@ -17,9 +14,7 @@ type
     property City: string read FCity write FCity;
     property Country: string read FCountry write FCountry;
   end;
-
   TAddresses = TArray<TAddress>;
-
   TNotes = class
   private
     FDate: TDateTime;
@@ -28,7 +23,6 @@ type
     property Date: TDateTime read FDate write FDate;
     property Text: string read FText write FText;
   end;
-
   TPerson = class
   private
     FAddresses: TAddresses;
@@ -49,11 +43,8 @@ type
     property Addresses: TAddresses read FAddresses write FAddresses;
     property RandomNumber: Integer read FRandomNumber write FRandomNumber;
   end;
-
 implementation
-
 { TPerson }
-
 procedure TPerson.AddAddress(const ACity, ACountry: string);
 var
   LAddress: TAddress;
@@ -61,17 +52,14 @@ begin
   LAddress := TAddress.Create;
   LAddress.City := ACity;
   LAddress.Country:= ACountry;
-
   SetLength(FAddresses, Length(FAddresses) + 1);
   FAddresses[Length(FAddresses) - 1] := LAddress;
 end;
-
 constructor TPerson.Create;
 begin
   FNotes := TNotes.Create;
   FBirthday := Now;
 end;
-
 destructor TPerson.Destroy;
 var
   LIndex: Integer;
@@ -80,8 +68,6 @@ begin
     FAddresses[LIndex].Free;
   SetLength(FAddresses, 0);
   FNotes.Free;
-
   inherited;
 end;
-
 end.

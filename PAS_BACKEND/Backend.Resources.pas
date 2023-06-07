@@ -1,4 +1,4 @@
-unit WiRLServer.Resources;
+unit Backend.Resources;
 
 interface
 
@@ -18,7 +18,7 @@ uses
   WiRL.http.Request,
   WiRL.http.Response,
 
-  WiRLServer.Entities;
+  Backend.Entities;
 
 type
 

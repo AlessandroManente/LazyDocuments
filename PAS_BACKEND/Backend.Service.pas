@@ -1,10 +1,19 @@
-unit WiRLServer.Service;
+unit Backend.Service;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.SvcMgr, Vcl.Dialogs, System.Win.Registry,
+  Winapi.Windows,
+  Winapi.Messages,
+
+  System.SysUtils,
+  System.Classes,
+  System.Win.Registry,
+
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.SvcMgr,
+  Vcl.Dialogs,
 
   // WiRL units
   WiRL.Core.Engine,
@@ -15,7 +24,7 @@ uses
   WiRL.http.Server.Indy;
 
 type
-  TLazyDocumentsWiRLService = class(TService)
+  TLazyDocumentsBackendService = class(TService)
     procedure ServiceDestroy(Sender: TObject);
     procedure ServiceCreate(Sender: TObject);
     procedure ServiceAfterInstall(Sender: TService);
@@ -42,7 +51,7 @@ type
   end;
 
 var
-  LazyDocumentsWiRLService: TLazyDocumentsWiRLService;
+  LazyDocumentsBackendService: TLazyDocumentsBackendService;
 
 implementation
 
@@ -50,40 +59,40 @@ implementation
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 begin
-  LazyDocumentsWiRLService.Controller(CtrlCode);
+  LazyDocumentsBackendService.Controller(CtrlCode);
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceDestroy(Sender: TObject);
+procedure TLazyDocumentsBackendService.ServiceDestroy(Sender: TObject);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceCreate(Sender: TObject);
+procedure TLazyDocumentsBackendService.ServiceCreate(Sender: TObject);
 begin
   //
 end;
 
 { TServiceWiRL }
 
-procedure TLazyDocumentsWiRLService.ConfigureServer;
+procedure TLazyDocumentsBackendService.ConfigureServer;
 begin
   FServer.SetPort(8080).SetThreadPoolSize(10).AddEngine<TWiRLEngine>
-    ('wirlservice').SetEngineName('REST Service')
-    .AddApplication('lazydocuments').SetAppName('LazyDocuments WiRL Service')
-    .SetFilters('*').SetResources(['*']);
+    ('lazydocuments').SetEngineName('REST Service').AddApplication('backend')
+    .SetAppName('LazyDocuments Backend Service').SetFilters('*')
+    .SetResources(['*']);
 end;
 
-function TLazyDocumentsWiRLService.GetServiceController: TServiceController;
+function TLazyDocumentsBackendService.GetServiceController: TServiceController;
 begin
   Result := ServiceController;
 end;
 
-procedure TLazyDocumentsWiRLService.Log(const AMessage: string);
+procedure TLazyDocumentsBackendService.Log(const AMessage: string);
 begin
   OutputDebugString(PChar(DateTimeToStr(Now) + ' ' + AMessage));
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceAfterInstall(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceAfterInstall(Sender: TService);
 var
   LReg: TRegistry;
 begin
@@ -92,37 +101,37 @@ begin
   try
     LReg.RootKey := HKEY_LOCAL_MACHINE;
     if LReg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
-      begin
-        LReg.WriteString('Description', 'LazyDocuments WiRL Service');
-        LReg.CloseKey;
-      end;
+    begin
+      LReg.WriteString('Description', 'LazyDocuments Backend Service');
+      LReg.CloseKey;
+    end;
   finally
     LReg.Free;
   end;
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceAfterUninstall(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceAfterUninstall(Sender: TService);
 begin
   Log('Unregistered ' + DisplayName);
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceBeforeInstall(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceBeforeInstall(Sender: TService);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceBeforeUninstall(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceBeforeUninstall(Sender: TService);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceContinue(Sender: TService;
+procedure TLazyDocumentsBackendService.ServiceContinue(Sender: TService;
   var Continued: Boolean);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceExecute(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceExecute(Sender: TService);
 begin
   FServer := TWiRLServer.Create(nil);
   try
@@ -143,30 +152,30 @@ begin
   end;
 end;
 
-procedure TLazyDocumentsWiRLService.ServicePause(Sender: TService;
+procedure TLazyDocumentsBackendService.ServicePause(Sender: TService;
   var Paused: Boolean);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceShutdown(Sender: TService);
+procedure TLazyDocumentsBackendService.ServiceShutdown(Sender: TService);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceStart(Sender: TService;
+procedure TLazyDocumentsBackendService.ServiceStart(Sender: TService;
   var Started: Boolean);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.ServiceStop(Sender: TService;
+procedure TLazyDocumentsBackendService.ServiceStop(Sender: TService;
   var Stopped: Boolean);
 begin
   //
 end;
 
-procedure TLazyDocumentsWiRLService.SetServer(const Value: TWiRLServer);
+procedure TLazyDocumentsBackendService.SetServer(const Value: TWiRLServer);
 begin
   FServer := Value;
 end;

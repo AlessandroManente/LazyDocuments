@@ -9,7 +9,10 @@
         <Projects Include="..\PAS_MONITOR\LazyDocumentsMonitor.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\PAS_WIRL\LazyDocumentsWiRL.dproj">
+        <Projects Include="..\PAS_BACKEND\LazyDocumentsBackend.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\PAS_LOGGER\LazyDocumentsLogger.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -38,23 +41,32 @@
     <Target Name="LazyDocumentsMonitor:Make">
         <MSBuild Projects="..\PAS_MONITOR\LazyDocumentsMonitor.dproj" Targets="Make"/>
     </Target>
-    <Target Name="LazyDocumentsWiRL">
-        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj"/>
+    <Target Name="LazyDocumentsBackend">
+        <MSBuild Projects="..\PAS_BACKEND\LazyDocumentsBackend.dproj"/>
     </Target>
-    <Target Name="LazyDocumentsWiRL:Clean">
-        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj" Targets="Clean"/>
+    <Target Name="LazyDocumentsBackend:Clean">
+        <MSBuild Projects="..\PAS_BACKEND\LazyDocumentsBackend.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="LazyDocumentsWiRL:Make">
-        <MSBuild Projects="..\PAS_WIRL\LazyDocumentsWiRL.dproj" Targets="Make"/>
+    <Target Name="LazyDocumentsBackend:Make">
+        <MSBuild Projects="..\PAS_BACKEND\LazyDocumentsBackend.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LazyDocumentsLogger">
+        <MSBuild Projects="..\PAS_LOGGER\LazyDocumentsLogger.dproj"/>
+    </Target>
+    <Target Name="LazyDocumentsLogger:Clean">
+        <MSBuild Projects="..\PAS_LOGGER\LazyDocumentsLogger.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LazyDocumentsLogger:Make">
+        <MSBuild Projects="..\PAS_LOGGER\LazyDocumentsLogger.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="LazyDocuments;LazyDocumentsMonitor;LazyDocumentsWiRL"/>
+        <CallTarget Targets="LazyDocuments;LazyDocumentsMonitor;LazyDocumentsBackend;LazyDocumentsLogger"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LazyDocuments:Clean;LazyDocumentsMonitor:Clean;LazyDocumentsWiRL:Clean"/>
+        <CallTarget Targets="LazyDocuments:Clean;LazyDocumentsMonitor:Clean;LazyDocumentsBackend:Clean;LazyDocumentsLogger:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LazyDocuments:Make;LazyDocumentsMonitor:Make;LazyDocumentsWiRL:Make"/>
+        <CallTarget Targets="LazyDocuments:Make;LazyDocumentsMonitor:Make;LazyDocumentsBackend:Make;LazyDocumentsLogger:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

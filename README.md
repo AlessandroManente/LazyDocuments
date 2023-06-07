@@ -1,2 +1,6 @@
 # LazyDocuments
-Daily document and expense manager
+Document manager for Windows with tags
+
+TODO:
+- [ ] Redis
+

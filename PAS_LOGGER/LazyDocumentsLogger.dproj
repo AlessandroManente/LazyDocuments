@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{AE4ABB51-E0AD-434D-9749-8FDBBA32AE5B}</ProjectGuid>
+        <ProjectGuid>{FC6689E4-9015-4E1F-A06F-7DB78FAC8279}</ProjectGuid>
         <ProjectVersion>19.5</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
@@ -8,7 +8,7 @@
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
-        <MainSource>LazyDocumentsMonitor.dpr</MainSource>
+        <MainSource>LazyDocumentsLogger.dpr</MainSource>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -56,7 +56,7 @@
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
-        <SanitizedProjectName>LazyDocumentsMonitor</SanitizedProjectName>
+        <SanitizedProjectName>LazyDocumentsLogger</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>RESTComponents;OmniThreadLibraryRuntime;DBXSqliteDriver;BigNumbers;DBXInterBaseDriver;vcl;IndyIPServer;vclactnband;IndyIPCommon;IconFontsImageListFMX;IndySystem;vclFireDAC;bindcompdbx;bindcompvclsmp;tethering;svnui;bindcompvclwinx;dsnapcon;FireDACADSDriver;BatLibraryFMX;WiRL;FireDACMSAccDriver;fmxFireDAC;OrpheusDR;vclimg;FireDAC;IconFontsImageList;vcltouch;vcldb;bindcompfmx;svn;FireDACSqliteDriver;FireDACPgDriver;ChromeTabs_R;inetdb;EssentialsDR;soaprtl;DbxCommonDriver;AsyncProDR;AbbreviaVCLD;fmx;fmxdae;FireDACIBDriver;xmlrtl;soapmidas;EsCore;fmxobj;vclwinx;vcledge;rtl;DbxClientDriver;CustomIPTransport;vcldsnap;IndyCore;DOSCommandDR;OrpheusDBDR;dbexpress;vclx;SynEditDR;bindcomp;appanalytics;dsnap;EsVclCore;FireDACCommon;IndyIPClient;bindcompvcl;RESTBackendComponents;ATFlatControlsPackage;VCLRESTComponents;soapserver;dbxcds;VclSmp;adortl;BatControlsFMX;vclie;BatControls;bindengine;DBXMySQLDriver;CloudService;EsVclComponents;FireDACMySQLDriver;dbrtl;IndyProtocols;dsnapxml;BatLibrary;inetdbxpress;FireDACCommonODBC;FireDACCommonDriver;inet;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
@@ -80,17 +80,16 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <DCC_DcpOutput>..\DCU</DCC_DcpOutput>
         <DCC_ExeOutput>..\EXE</DCC_ExeOutput>
         <DCC_DcuOutput>..\DCU</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_UnitSearchPath>D:\Documents\Repos\WiRL-4.0.1\Source\Core;D:\Documents\Repos\WiRL-4.0.1\Source\Client;D:\Documents\Repos\WiRL-4.0.1\Source\Data\FireDAC;D:\Documents\Repos\WiRL-4.0.1\Source\Data;D:\Documents\Repos\WiRL-4.0.1\Source\Extensions;D:\Documents\Repos\WiRL-4.0.1\Source\Messaging;D:\Documents\Repos\delphi-jose-jwt-3.2.0\Source\Common;D:\Documents\Repos\delphi-jose-jwt-3.2.0\Source\JOSE;D:\Documents\Repos\delphi-neon-2.0.3\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppExecutionLevel>requireAdministrator</AppExecutionLevel>
-        <PreBuildEvent><![CDATA[D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsMonitor.exe /uninstall
-$(PreBuildEvent)]]></PreBuildEvent>
-        <PostBuildEvent><![CDATA[D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsMonitor.exe /install
+        <PostBuildEvent><![CDATA[D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsLogger.exe /uninstall
+D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsLogger.exe /install
 $(PostBuildEvent)]]></PostBuildEvent>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -107,11 +106,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="MonitorService.pas">
-            <Form>LazyDocumentsMonitorService</Form>
+        <DCCReference Include="Logger.Service.pas">
+            <Form>LazyDocumentsLoggerService</Form>
             <FormType>dfm</FormType>
             <DesignClass>TService</DesignClass>
         </DCCReference>
+        <DCCReference Include="Logger.Resources.pas"/>
+        <DCCReference Include="Logger.Entities.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -130,15 +131,21 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">LazyDocumentsMonitor.dpr</Source>
+                    <Source Name="MainSource">LazyDocumentsLogger.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile LocalName="Win32\Debug\LazyDocumentsMonitor.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="..\EXE\LazyDocumentsLogger.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>LazyDocumentsLogger.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\EXE\LazyDocumentsWiRL.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>
@@ -974,11 +981,11 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsMonitor.exe /uninstall</PreBuildEvent>
+        <PreBuildEvent/>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsMonitor.exe /install</PostBuildEvent>
+        <PostBuildEvent>D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsLogger.exe /uninstall&amp;&amp;D:\Documents\Repos\LazyDocuments\EXE\LazyDocumentsLogger.exe /install</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

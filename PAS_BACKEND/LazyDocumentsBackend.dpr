@@ -1,10 +1,11 @@
-program LazyDocumentsWiRL;
+program LazyDocumentsBackend;
 
 uses
   Vcl.SvcMgr,
-  WiRLServer.Service in 'WiRLServer.Service.pas' {LazyDocumentsWiRLService: TService},
-  WiRLServer.Resources in 'WiRLServer.Resources.pas',
-  WiRLServer.Entities in 'WiRLServer.Entities.pas';
+  Backend.Service
+    in 'Backend.Service.pas' {LazyDocumentsBackendService: TService} ,
+  Backend.Resources in 'Backend.Resources.pas',
+  Backend.Entities in 'Backend.Entities.pas';
 
 {$R *.RES}
 
@@ -25,6 +26,8 @@ begin
   //
   if not Application.DelayInitialize or Application.Installing then
     Application.Initialize;
-  Application.CreateForm(TLazyDocumentsWiRLService, LazyDocumentsWiRLService);
+  Application.CreateForm(TLazyDocumentsBackendService,
+    LazyDocumentsBackendService);
   Application.Run;
+
 end.

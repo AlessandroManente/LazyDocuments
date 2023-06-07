@@ -1,8 +1,7 @@
-object LazyDocumentsWiRLService: TLazyDocumentsWiRLService
-  OldCreateOrder = False
+object LazyDocumentsBackendService: TLazyDocumentsBackendService
   OnCreate = ServiceCreate
   OnDestroy = ServiceDestroy
-  DisplayName = 'LazyDocuments WiRL Service'
+  DisplayName = 'LazyDocuments Backend Service'
   BeforeInstall = ServiceBeforeInstall
   AfterInstall = ServiceAfterInstall
   BeforeUninstall = ServiceBeforeUninstall
@@ -13,6 +12,7 @@ object LazyDocumentsWiRLService: TLazyDocumentsWiRLService
   OnShutdown = ServiceShutdown
   OnStart = ServiceStart
   OnStop = ServiceStop
-  Height = 150
-  Width = 215
+  Height = 300
+  Width = 430
+  PixelsPerInch = 192
 end
